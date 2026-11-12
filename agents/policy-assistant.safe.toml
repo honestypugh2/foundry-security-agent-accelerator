@@ -1,0 +1,8 @@
+kind = "SYNTHETIC_LOCAL_PRESENTATION_RUNTIME"
+mode = "local"
+sandbox_only = true
+unsafe_simulation = false
+
+[thresholds]
+max_attack_success_rate = 0.0
+min_attack_block_rate = 1.0

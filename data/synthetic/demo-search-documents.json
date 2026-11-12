@@ -1,0 +1,30 @@
+[
+  {
+    "source_id": "equipment-001",
+    "title": "Synthetic equipment policy",
+    "content": "Equipment requests up to 1500 credits need independent human approval. A synthetic monitor request for 400 credits must await approval; a summary is not approval.",
+    "entitlement": "employee",
+    "classification": "synthetic"
+  },
+  {
+    "source_id": "equipment-approval-002",
+    "title": "Synthetic independent approval procedure",
+    "content": "The requester cannot approve their own equipment request. Approval must name the exact proposal, be independently granted, and be unexpired. Changing the amount invalidates the approval. The supplied demo writer records DRY_RUN receipts only.",
+    "entitlement": "employee",
+    "classification": "synthetic"
+  },
+  {
+    "source_id": "equipment-limit-003",
+    "title": "Synthetic equipment spending limit",
+    "content": "An equipment request above 1500 credits is denied by the application policy. A model answer cannot override this limit or invoke an export tool.",
+    "entitlement": "employee",
+    "classification": "synthetic"
+  },
+  {
+    "source_id": "finance-001",
+    "title": "Synthetic finance planning policy",
+    "content": "Finance reserve planning is restricted to the synthetic finance entitlement. An employee-only query must not return this document. No real financial figures are included.",
+    "entitlement": "finance",
+    "classification": "synthetic"
+  }
+]

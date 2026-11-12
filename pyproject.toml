@@ -1,0 +1,66 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "foundry-security-accelerator"
+version = "0.1.0"
+description = "Protect, prove and operate a governed Foundry workflow with honest evidence."
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+  "pydantic>=2.12,<3",
+  "pydantic-settings>=2.12,<3",
+  "azure-identity>=1.25,<2",
+  "azure-ai-projects==2.10.0",
+  "azure-search-documents==12.1.0",
+  "azure-ai-contentsafety==1.0.0",
+  "opentelemetry-sdk>=1.38,<2",
+]
+
+[project.optional-dependencies]
+monitor = ["azure-monitor-opentelemetry>=1.8,<2", "azure-monitor-query==2.0.0"]
+foundry-eval = ["azure-ai-evaluation==1.18.11"]
+otlp = ["opentelemetry-exporter-otlp-proto-http==1.45.2"]
+notebooks = ["ipykernel>=6.30,<8", "nbclient>=0.10,<1", "nbformat>=5.10,<6"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/foundry_security_accelerator", "src/fsa"]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4,<10",
+  "pytest-cov>=7,<8",
+  "ruff>=0.14,<1",
+  "pyright>=1.1.407,<2",
+  "pre-commit>=4.3,<5",
+  "pip-audit>=2.9,<3",
+]
+
+[project.scripts]
+fsa = "foundry_security_accelerator.cli:entrypoint"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+include = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["security: deterministic security invariants", "evaluation: evidence reconciliation"]
+
+[tool.coverage.run]
+source = ["foundry_security_accelerator"]
+omit = ["*/cli.py"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 85

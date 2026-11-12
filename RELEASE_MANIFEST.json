@@ -1,0 +1,613 @@
+{
+  "status": "WORKSHOP_SOURCE_SNAPSHOT",
+  "files": [
+    {
+      "path": ".env.example",
+      "sha256": "3df20ef8649f9700e8172a71dffb7ecfc60c446becaae50955b081c68b61ea77"
+    },
+    {
+      "path": ".github/workflows/validate.yml",
+      "sha256": "9167a6093d9a404fe3bb584e2fff74e3e08485d151eed275acfd5aeddb36e7aa"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "b009d84678ccd04c40a079351d30a39482ee38d05ea19312bb1fdce53c65cf40"
+    },
+    {
+      "path": ".python-version",
+      "sha256": "7b55f8e67b5623c4bef3fa691288da9437d79d3aba156de48d481db32ac7d16d"
+    },
+    {
+      "path": "APEX_Foundry_Security_Agent365_Nov12_2026.html",
+      "sha256": "edf6e1dfb6a8a055585a5ebed3aa386cf3da6fd1e3bac39877353ede143994cd"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "4938c279d090087122e13549d06e056ecb5162bc9fe98308bb2bc57f735e3205"
+    },
+    {
+      "path": "IMPLEMENTATION_STATUS.md",
+      "sha256": "f8a3276977888b86bd97c11310e3a2c72a4fb595cbc0ce50bb34e8be4e5ac0db"
+    },
+    {
+      "path": "L600_TECHNICAL_VALIDATION.md",
+      "sha256": "6b301a383edff68a13ff7376b5b830f6e4fd71ff4429b42cb2d46ffe7fa328fd"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "c6b101f8b80ee3b77b6ee98dd7bb57af64d9837a9a8c5880a472751bb121b149"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "fe090f9a2b57dd9d392651e9deb2cf56c7724f82ab478e8039959444720a2e6b"
+    },
+    {
+      "path": "README.md",
+      "sha256": "724f20f2a13476d1168184d4db75b36bcb45436510800b12f0914b404bb1146d"
+    },
+    {
+      "path": "REQUIREMENTS_GAP_ANALYSIS.md",
+      "sha256": "79cf24892d28054e5792f83ba9e5db19b01abaadecff51b7ac728c3ef2c9ed2e"
+    },
+    {
+      "path": "REUSE_ASSESSMENT.md",
+      "sha256": "4abf53f8332f9225ce4fad24f1466a03cc0d20fe146e557d0979aa8d904c1c6e"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "32e7c4c0b565b0dc827f4023b2a2ebeb8d0f4971db40a5fae24b944d60a7a971"
+    },
+    {
+      "path": "VALIDATION_EVIDENCE.md",
+      "sha256": "9039be8763169a3e55b5c34f9227e993e2ffca340da5d7a6d48251992849e1ea"
+    },
+    {
+      "path": "agents/policy-assistant.safe.toml",
+      "sha256": "188c14425076a1cb9cfb0b6cabc74878111f293f09f6ef16ac0a1c858f745a4c"
+    },
+    {
+      "path": "agents/policy-assistant.unsafe.toml",
+      "sha256": "c91fc80c7a33233dc5c304dc4211dfaae89f31e279d691dbfacba1ef66a45eb4"
+    },
+    {
+      "path": "data/adversarial/scenarios.json",
+      "sha256": "4ea8f3aa27206d609852a605ac0b1adb380fd6b66369f4ee518fd53e1569c8c3"
+    },
+    {
+      "path": "data/agent_state/blocked_new_agent.json",
+      "sha256": "33c3b4e4b0bf549b413db37994526d916119ba51b5cb46fac9cfb9949da622c7"
+    },
+    {
+      "path": "data/agent_state/enabled_agent.json",
+      "sha256": "4c3ad27c0952d51cd72e39fca69dd99ead03b03611ca77809b0ce0b863f4a786"
+    },
+    {
+      "path": "data/agent_state/legacy_exception.json",
+      "sha256": "810be44251ebd877da7995771d52e024bbf2a63fae2e57be9051e89cec292ee6"
+    },
+    {
+      "path": "data/evaluation/smoke.jsonl",
+      "sha256": "482bb38be68b27806c2d856d4de1e051e3e1744465c0b0f86e7ae5c37bf6d7ab"
+    },
+    {
+      "path": "data/evaluation/thresholds.toml",
+      "sha256": "aa12f9c81fc4d7af822ab6b1b1fa3b10687f88033e34be91c2aeae7f32108ab9"
+    },
+    {
+      "path": "data/evaluation/unsafe-execution.json",
+      "sha256": "bdba77e1c28084a61a1f4a180be64c5f22c78a2d32273b92e7b07dac9b1c9f0b"
+    },
+    {
+      "path": "data/evaluation/workflow.jsonl",
+      "sha256": "52800c4d60cb410d5fcc83dbd9ae88345148bdba9751b2cb6b791b7700b14221"
+    },
+    {
+      "path": "data/redteam/synthetic_items.json",
+      "sha256": "16bccdc927832a27da5e11bb054b03ba511dbff5a9ae33ef4416e8693c4d931c"
+    },
+    {
+      "path": "data/synthetic/demo-search-documents.json",
+      "sha256": "0e25723694a08b9f849ce6f0ba2654b42337db66f850232da0b540795b9e4014"
+    },
+    {
+      "path": "data/synthetic/equipment-policy.json",
+      "sha256": "f0fbed47679ead14b6792858b19a4d7d92cfe492faa4f9a1e11a2d3c61e0a296"
+    },
+    {
+      "path": "data/synthetic/presentation-corpus.json",
+      "sha256": "457bfa14a6cc16f307b48d7d2a67c13ff6ba9fedf39cb05c0428b3494d3ddd03"
+    },
+    {
+      "path": "docs/AGENT365_EXTENSION.md",
+      "sha256": "0430c3370c1ba97de0621c2f5455218ae8cc40caae2de052ff73dbd30686a9f1"
+    },
+    {
+      "path": "docs/AGENT365_INTEGRATION_STATUS.md",
+      "sha256": "286e8cce9f92471408ebb2e2b72be7e41254e304fefdee0b54d1aaca2e10e64a"
+    },
+    {
+      "path": "docs/APEX_AZURE_LIVE_RESULTS.md",
+      "sha256": "edb6b5e3d85d4b842861ed31836169852408f921613b71577e51eb05f868e731"
+    },
+    {
+      "path": "docs/APEX_VALIDATION_RESULTS.md",
+      "sha256": "09242fd29be4352c3833982bebd444a7a587be97405f216e9fac92fafe8b676f"
+    },
+    {
+      "path": "docs/COWORK_LAB_ALIGNMENT.md",
+      "sha256": "94eacdc1446eca6926b1ee1d1536e590290f6a458537b2c810f5d3988d8506f7"
+    },
+    {
+      "path": "docs/LIVE_AZURE_SETUP.md",
+      "sha256": "29d66d47c3fdfa51f7111a03ce930398b6df073b07fba65886c52248148f9687"
+    },
+    {
+      "path": "docs/agent365/defender-integration.md",
+      "sha256": "6e23afd979fad849156a7bcd8100ab068347af4480074f064f425940cd78e74f"
+    },
+    {
+      "path": "docs/agent365/governance.md",
+      "sha256": "e4d2a601c4d5eafa9e3666d08411f09736762b873b55f6713e8dae6b39792e64"
+    },
+    {
+      "path": "docs/agent365/identity-and-permissions.md",
+      "sha256": "1f1c3c35207fe8eb5af168dec1a184a0d7de2275a730fb529c34fd66db6894ef"
+    },
+    {
+      "path": "docs/agent365/integration-architecture.md",
+      "sha256": "52307aa30422cfbcbffa16d76cde3142359064b5689926d8ccc90309f5022790"
+    },
+    {
+      "path": "docs/agent365/prerequisites.md",
+      "sha256": "947a6e620bca23ee028d8b79ea057e04130270b111b5c96f448c10fdb978ee98"
+    },
+    {
+      "path": "docs/agent365/publishing-and-registry.md",
+      "sha256": "1d1662e4553ad52bf4f5d8de8293189027af17ef2d095867fbea8687d876bf31"
+    },
+    {
+      "path": "docs/agent365/purview-integration.md",
+      "sha256": "bf5a27473e72cfffdb013768b7898b165b09a69c00f0c14aa1e294ed8c752964"
+    },
+    {
+      "path": "docs/agent365/signal-scope-matrix.md",
+      "sha256": "ed8a44b55e17b8b3933d6650ccb55cbb8892f88b8731306ed025a8ce77eadb1c"
+    },
+    {
+      "path": "docs/agent365/telemetry.md",
+      "sha256": "6aea372aa2c442493d3d4c45fc47620010e5b6e4cc54dc0329af2562f557a1b3"
+    },
+    {
+      "path": "docs/agent365/troubleshooting.md",
+      "sha256": "74afe4ca1c51a0b02516e6fdee794f66a3d091540d212b0f049a942a44f5d1d5"
+    },
+    {
+      "path": "docs/architecture/azure-deployment.md",
+      "sha256": "2a09121ab5dc9632f931692b5d84f631536cc386757fb63c92b0072819af78c0"
+    },
+    {
+      "path": "docs/architecture/cross-cloud-governance-pattern.md",
+      "sha256": "df654339d6cac58dd16adc87fb38ae5b9770f20d233fbf9df324ccafb99138b8"
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "bad2b98e01e0d4f4d77d6b3a611d3e493b8b68115e790039272f138f1e149a30"
+    },
+    {
+      "path": "docs/assets/readme-banner.png",
+      "sha256": "58f4db3f2af703deec9e1a0715d0c5182f26ff24986524454b3ddc4312b4aaa0"
+    },
+    {
+      "path": "docs/clouds/commercial-vs-government.md",
+      "sha256": "2a427734687cec984ce10fe0a4f2acfdd6b409270c8a98454d7fd6e5792e1a2c"
+    },
+    {
+      "path": "docs/clouds/compensating-controls.md",
+      "sha256": "b353683699771831d19822fc579230ca3a614f4a7cf4a2d6f1c2414300bc26fc"
+    },
+    {
+      "path": "docs/clouds/cross-cloud-governance.md",
+      "sha256": "4d3d2c499aa953ad83db6684e1064aa39a2caa7301146d9611ad588b56a2421e"
+    },
+    {
+      "path": "docs/clouds/feature-availability.md",
+      "sha256": "35bad1908de271e32392c6667d21ffbc21fae5baa109da1eaed9426b34f8c41c"
+    },
+    {
+      "path": "docs/evaluations/asr-limitations.md",
+      "sha256": "ecae071edd7e8fa402f7c42265958d690db710175ef6343c9fb8d09964850d51"
+    },
+    {
+      "path": "docs/evaluations/foundry-service.md",
+      "sha256": "424f56e6901b49656ff235cbca81dfcdccbd1ee99f7d36f67877daca0b4d672a"
+    },
+    {
+      "path": "docs/evaluations/framework.md",
+      "sha256": "3c101edc41b7177a4c940f3557f36660a853c7f7f9645840cb4c506a2dfe8907"
+    },
+    {
+      "path": "docs/evaluations/human-adjudication.md",
+      "sha256": "854343927c0e6706fb394810d5e83d9a9e624f4ecfb444c620a6415a86cae16e"
+    },
+    {
+      "path": "docs/evaluations/redteam-reconciliation.md",
+      "sha256": "ed2634be5c9739ab89c1fd8ba487ef92fd515ba76a98ba6aecc21dbd4eade1a2"
+    },
+    {
+      "path": "docs/evaluations/release-gates.md",
+      "sha256": "1b230125a8972c131ae7a9b1d2dac39778ad1f1c6acb5064e32be93d335fd4a2"
+    },
+    {
+      "path": "docs/evaluations/verdict-semantics.md",
+      "sha256": "62911680f4496d9c54e30c6e2be749994d8a1af6dc286112c92f5e74b3d1f2f5"
+    },
+    {
+      "path": "docs/index.html",
+      "sha256": "6305feab21d78697f7468d69f7cd437f9ceb2f5197d50f53aace2d22096d53f1"
+    },
+    {
+      "path": "docs/observability/correlation-model.md",
+      "sha256": "0c11d44e5013a635e2de3d67db2db2f0e0433fd2a204bbea8b56deac3f369d2c"
+    },
+    {
+      "path": "docs/observability/trace-architecture.md",
+      "sha256": "e5ac27a13569626cbb9ae9738a275a608ad7e922169c3b2096af915355f06a33"
+    },
+    {
+      "path": "docs/observability/trace-completeness.md",
+      "sha256": "0b528beb2b7126189ff46247694e557cb58c3fb96483b7f3b96957a7a6328efb"
+    },
+    {
+      "path": "docs/participant-lab/README.md",
+      "sha256": "21f1bc5e6dd64227c570f4528b551dba9f1a9b96b8f0966cd213660a0b95838b"
+    },
+    {
+      "path": "docs/participant-lab/agent365-extension.md",
+      "sha256": "6282b47101296d0eedb80d07990025730c8a8423fff2d9d1c174eb3357a035d9"
+    },
+    {
+      "path": "docs/participant-lab/azure-live-lab.md",
+      "sha256": "5c2ce66e1623e76407979749a44bbf0ff514ff89d28d11ff92c1eec3dc723966"
+    },
+    {
+      "path": "docs/participant-lab/cleanup.md",
+      "sha256": "db9ddbf06d1c617cdcb43a9a0c5bcff67f978e3981e5ee89ba866abe55fffeba"
+    },
+    {
+      "path": "docs/participant-lab/local-fallback.md",
+      "sha256": "44a77cd6a396f0d85192ed01f7ef97bec98a10fe6f067ed6b009601aca5d22a6"
+    },
+    {
+      "path": "docs/participant-lab/no-code-security-observation.md",
+      "sha256": "24f8f908119a921f9b1f943b273c4181df621c427937990b41b6eb50fc712827"
+    },
+    {
+      "path": "docs/participant-lab/troubleshooting.md",
+      "sha256": "e4a5177d4685c08e6517fd90eb14301db8cddb307eeb90710bb025530cb9a763"
+    },
+    {
+      "path": "docs/research/chapter10-source-to-code.md",
+      "sha256": "eb1af812082bd022290a6419b6083335a3f00662a40ca2d8fd15166919433f64"
+    },
+    {
+      "path": "docs/research/product-validation.md",
+      "sha256": "266ee89b1f322acb9935c01ca6a321f0110d8088c2315d959161f3c093acc4a7"
+    },
+    {
+      "path": "docs/research/source-to-code-mapping.md",
+      "sha256": "e53634c2f05e81a7b4566bcfe08272506f05fe6f618af9924d7aa08261567743"
+    },
+    {
+      "path": "docs/reuse-and-attribution.md",
+      "sha256": "a9aa2528c12befaa3393789dfa94f121f3579df4d59c29624972c1ab643c0062"
+    },
+    {
+      "path": "docs/security/advanced-threat-model.md",
+      "sha256": "0c83debca10df5669ddc10ffc484c1a08f943ad1172246641fd266db8ab5c83b"
+    },
+    {
+      "path": "docs/security/control-mapping.md",
+      "sha256": "3657a66a24c56bbfd817eee1a629b41a900e1dd209e13083f59054ab9ec0d330"
+    },
+    {
+      "path": "docs/security/egress-security.md",
+      "sha256": "61fc3371263e2450b11419579d7802e82b988115ef1d1527685c77964ed25ee3"
+    },
+    {
+      "path": "docs/security/evidence-assurance.md",
+      "sha256": "59f571dae4d23bfc329e63629c48c1b0f197f7b5722cd01ce54f8bc32106ac0d"
+    },
+    {
+      "path": "docs/security/mcp-security.md",
+      "sha256": "cb40120f3087790a1c81149bc162636b2d511e588b689199d922315b6eaae43e"
+    },
+    {
+      "path": "docs/security/multi-agent-delegation.md",
+      "sha256": "673bd2f29cf25118a070bada1a78fafab26b4fb1fac2270bd9030d61869baa71"
+    },
+    {
+      "path": "docs/security/six-pillar-control-matrix.md",
+      "sha256": "bd3cc339d93d34da906a746f95a4c515a44429985c89324be3f0e756e9ba5c68"
+    },
+    {
+      "path": "docs/security/threat-model.md",
+      "sha256": "eb77447f1256d68c1b7e55326dc854963934d2249ee15f7bca12b53492da02ea"
+    },
+    {
+      "path": "infra/live.bicep",
+      "sha256": "f2c7612f0a840e26c9b179938c0b1e9d8c3c71e2529468dc4a9264bcf7809b1f"
+    },
+    {
+      "path": "infra/live.json",
+      "sha256": "a8db28c6c65ed641fa784cb89ce932a7a71683cc4a500358b73518dc7d6000fa"
+    },
+    {
+      "path": "infra/main.bicep",
+      "sha256": "ef9001f9ae045e39ba41d1687d8d0f4531a9dc39dc1123821e3ac0b9d0f1f45c"
+    },
+    {
+      "path": "notebooks/00_environment_setup.ipynb",
+      "sha256": "98616a97a457a4b00966f34223cb410fd1e3741f315f6c182166d24e32fd8558"
+    },
+    {
+      "path": "notebooks/01_foundry_agent_live.ipynb",
+      "sha256": "8517d6b6bbc9fe2ac41bfc1de7fc7356b1407ef2cec05b09bd94ec11043fb76e"
+    },
+    {
+      "path": "notebooks/02_protect_identity_and_tools.ipynb",
+      "sha256": "9b06300699b30b74a81414aa24d89f7b319fb813b9c27b6ec6e0f093c42f4a9d"
+    },
+    {
+      "path": "notebooks/03_prove_evaluations_and_redteam.ipynb",
+      "sha256": "33ec7a21b16b4e5b4d9b73b4b3662b6cf687bee2554e891a6c1466bbe26ec4c0"
+    },
+    {
+      "path": "notebooks/04_operate_traces_and_audit.ipynb",
+      "sha256": "501d21bbcc3999e6e7c9ee9f95ac27fc3f7d957a3b0cb7302557f3f59f3f440e"
+    },
+    {
+      "path": "notebooks/05_agent365_extension.ipynb",
+      "sha256": "dc833c9312130410ace0b4f628656be9c517f2e478cd63ab01aa7692c59dce0b"
+    },
+    {
+      "path": "notebooks/06_local_fallback.ipynb",
+      "sha256": "9504f3277b7ff19a9032b3fb25f694a94f98a51872152225a6342dd2ae7fffd1"
+    },
+    {
+      "path": "notebooks/README.md",
+      "sha256": "44f9bfcdc686d984a07c71666dcbba5b47d8f403fb30ffac8d2f172f7b51d2b4"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "f14e8fa45ab8aee863896000aadf4f160df64bc783aae74426cba66b003285b3"
+    },
+    {
+      "path": "scripts/azure_preflight.py",
+      "sha256": "0fa2dd1d408d3c238aca313e54bbcb2ad5a4f4ca290f8ede871f4de51f296f9b"
+    },
+    {
+      "path": "scripts/prepare_audience_release.py",
+      "sha256": "8340e1e24de371f65f7f62d61203d1ffd72c6f411d444129e07106e12370371d"
+    },
+    {
+      "path": "scripts/run_tests_stdlib.py",
+      "sha256": "3e4a10a673809255ab862d96b32a78982ff2f4ebce8f6b63e81b27d1b061dfe9"
+    },
+    {
+      "path": "scripts/scan_public.py",
+      "sha256": "6b6167b1c676314d21bd577454de2d190ccaf69ef255ede11e6a9ee8ac486e88"
+    },
+    {
+      "path": "scripts/validate_html_browser.py",
+      "sha256": "8b60b84fc20cee7bfbac3f38abd3c112ebd18aa5bd4d85e79a681b3a139ac34f"
+    },
+    {
+      "path": "scripts/validate_notebooks.py",
+      "sha256": "dbe4f9dba4473ae2b21832afee3da5bf6f5d510d335dce24ec26857d3ff0f600"
+    },
+    {
+      "path": "scripts/verify_release_gate.py",
+      "sha256": "3a88cd2602a1b3144dc24b6087ebde7001817c7a21f2d680441f7d5a3a07e9dd"
+    },
+    {
+      "path": "src/foundry_security_accelerator/__init__.py",
+      "sha256": "a760d4566d2f20a4ace85f997d2b373e69edfe7ae124ba4d903312cf5bc7353f"
+    },
+    {
+      "path": "src/foundry_security_accelerator/agent.py",
+      "sha256": "ec763cdf61eb1925947df19b8ab89d78282a641a9945c3a5681a603a494721f9"
+    },
+    {
+      "path": "src/foundry_security_accelerator/agent365/__init__.py",
+      "sha256": "3ef7f4d8492efd84161b38dee784609b36bb7aea45e1d960c67bc5615b0585b0"
+    },
+    {
+      "path": "src/foundry_security_accelerator/agent_state.py",
+      "sha256": "1326a17b1fa8699c4014c527a400fd91dd6ce1cb69750362ec1e6b1bfa9f5bbf"
+    },
+    {
+      "path": "src/foundry_security_accelerator/approvals.py",
+      "sha256": "ee817f1f480721f6ea6cd4fa224e0d3ec03fe67754ee90f462bf6e71864017ef"
+    },
+    {
+      "path": "src/foundry_security_accelerator/audit.py",
+      "sha256": "f06093c78319efe3b7e201be3efa07ad47db56baa09f8a9c6afb73a4edc09f15"
+    },
+    {
+      "path": "src/foundry_security_accelerator/azure_ops.py",
+      "sha256": "6fd0445d2055665c17d99f4cc2a981b0fbddb9d297dde320acf48cb758705cc5"
+    },
+    {
+      "path": "src/foundry_security_accelerator/cli.py",
+      "sha256": "b02b634fea631c4993854ff1cd3fcb9799b20a16877e8278acf008c828c00f22"
+    },
+    {
+      "path": "src/foundry_security_accelerator/config.py",
+      "sha256": "30b3ca08e2d9a364b2e30a94d22c67bc3eae0617e0b04d22d6d346931c346d73"
+    },
+    {
+      "path": "src/foundry_security_accelerator/contracts.py",
+      "sha256": "093a3d59a5fd000d9621f3e0d2b62e98c2dfa0810e4fe6a01b257250d9d1f457"
+    },
+    {
+      "path": "src/foundry_security_accelerator/evaluation.py",
+      "sha256": "d388ab95124255e6db593eb517af63ff87174f6bb9b5f71bb754b533c36f40f9"
+    },
+    {
+      "path": "src/foundry_security_accelerator/evidence.py",
+      "sha256": "b2952d454cc079addad4d993ed6a263a523148012a1a6bf533ba534b950f0ab3"
+    },
+    {
+      "path": "src/foundry_security_accelerator/identity.py",
+      "sha256": "6ce84c43be2f530976ca8b9dddc5d4d0dc923c194f83fe5f55cc37768e0d201d"
+    },
+    {
+      "path": "src/foundry_security_accelerator/lifecycle.py",
+      "sha256": "5294fa0ff82fb208c60b073c55f7fb925f92581e90ead3e4a9ac8130edd72c6f"
+    },
+    {
+      "path": "src/foundry_security_accelerator/live_validation.py",
+      "sha256": "42eb95ad7b55f41ad3016dfb9e800f7c6e4c1ac045536087c54a1590c079e280"
+    },
+    {
+      "path": "src/foundry_security_accelerator/observability.py",
+      "sha256": "58b0b2690f444369e07059c9bb1124447dfda67b198a7e4582d978c3cd0343d3"
+    },
+    {
+      "path": "src/foundry_security_accelerator/policy.py",
+      "sha256": "9cd0169775b550aed1921c102b6527cbf59dfef4dd7ad4abcce58e12bcf36d15"
+    },
+    {
+      "path": "src/foundry_security_accelerator/presentation_runtime.py",
+      "sha256": "a47dcf7532ca2cec12a1759e35a95d8d703d256032d2847bfff909f359c1e85d"
+    },
+    {
+      "path": "src/foundry_security_accelerator/redteam.py",
+      "sha256": "83b2d6db95c3bb04c7d87953b1e7fc75eedf5320ef9bf6077e420bf081d517a2"
+    },
+    {
+      "path": "src/foundry_security_accelerator/rehearsal.py",
+      "sha256": "14b22d96d4e49bcd53e1e49da2a99f57e7ec027aa6a87b57c29a64803cb677b9"
+    },
+    {
+      "path": "src/foundry_security_accelerator/retrieval.py",
+      "sha256": "b7c5fd22a814c3e223af8cd0b4ebcbd1359753fd0ff3ef99afd41bb58f2fcd7d"
+    },
+    {
+      "path": "src/foundry_security_accelerator/scenarios.py",
+      "sha256": "34a9232044eb49b09d74476e0e3d71e87a36166e84ad956319d0225c884d5928"
+    },
+    {
+      "path": "src/foundry_security_accelerator/security.py",
+      "sha256": "09bb2d4b4e396852e9e864ce5713ac9f55235f188de90b7ef1423c203b4341f8"
+    },
+    {
+      "path": "src/foundry_security_accelerator/tools.py",
+      "sha256": "fd47e9c0e2d62caf554b4d801e1af640511a390f950d82be520b322cc49f0eee"
+    },
+    {
+      "path": "src/foundry_security_accelerator/workflow.py",
+      "sha256": "a4f284c7f10f9a76a6886a5565971a87f9386883d3b0b13c33d29a7aad2a9332"
+    },
+    {
+      "path": "src/foundry_security_accelerator/workflow_evaluation.py",
+      "sha256": "8559aa5fd5f8e3992a9c96a7bbd14bbd2ab5f489ed2589c4fbca5ec831a6d2f9"
+    },
+    {
+      "path": "src/foundry_security_accelerator/writer.py",
+      "sha256": "8deafce1638a323d43527a712ccd2e0bd0cd18a654192632f264c3e3ee0cce08"
+    },
+    {
+      "path": "src/fsa/__init__.py",
+      "sha256": "af6f33008ef79c2d6112f03627b895f74e2ab97bfb2bc998f5cd4ea2fc46f5ec"
+    },
+    {
+      "path": "src/fsa/__main__.py",
+      "sha256": "f63c7c7a7e5124fe733abbd81f5bf1f73a11db82ae80287bdbc7538cd48388e5"
+    },
+    {
+      "path": "tests/conftest.py",
+      "sha256": "aabedc8320536d692768cb1cd2c1b842340dc17d7622a0d0b113d300b4126218"
+    },
+    {
+      "path": "tests/test_agent_state.py",
+      "sha256": "b1009d36b6df42654fadf9ddfd70f516a2d14faef292118150743b4a8ba296e8"
+    },
+    {
+      "path": "tests/test_azure.py",
+      "sha256": "e8aba8eb2d0abc445137f78119b2c455bd8b4fa78671401c5444560558978b59"
+    },
+    {
+      "path": "tests/test_cli.py",
+      "sha256": "20017621729b5e3028b16461961ba8e45d6e420c709a65dc325a541cc72b9791"
+    },
+    {
+      "path": "tests/test_compatibility.py",
+      "sha256": "5aafef7eb62f5371a5ca67416bd0f9271ec293db6d3cb9f93c8c62c57e5711a0"
+    },
+    {
+      "path": "tests/test_core.py",
+      "sha256": "16dc814adeb634f9561340612d8a16ead55e661fbfddb2022d371537e5c24455"
+    },
+    {
+      "path": "tests/test_evaluation_observability.py",
+      "sha256": "7c817821c8dfaa82f734936048a2dec13a4cc7197956abe96a962db0488f8c6a"
+    },
+    {
+      "path": "tests/test_html.py",
+      "sha256": "d9c773c81b55bde614faa0c240e3c0dfaeabcd92c5f22c5bd475be5a03d1d9ac"
+    },
+    {
+      "path": "tests/test_infra.py",
+      "sha256": "3fbbec872a1dbc7cbda475d31e4f778d4fa454b7a4f421d6dbb12b775bb93104"
+    },
+    {
+      "path": "tests/test_lifecycle.py",
+      "sha256": "554631a568b8e2c78336c30ffb058ca396d4fd0e44ed7458224ac350dcda5514"
+    },
+    {
+      "path": "tests/test_live_validation.py",
+      "sha256": "1846b38b3e9432f3d3f080c327ae8359f783918759c7ff074a058e747be2c072"
+    },
+    {
+      "path": "tests/test_notebooks.py",
+      "sha256": "a90675d566359c177c5b2edde059c5cda5386538fa6754800a85fe14fc84819a"
+    },
+    {
+      "path": "tests/test_presentation_cli.py",
+      "sha256": "3d57972016d3569f1e521cb80fb4277720399a91569b61f198b299427439dfee"
+    },
+    {
+      "path": "tests/test_presentation_runtime.py",
+      "sha256": "dcb0a86064a802f9628ef3a950b6a2ac44c4a8b4d5d00aa723daa534a8728c62"
+    },
+    {
+      "path": "tests/test_public_scan.py",
+      "sha256": "9e416b9beba59ef7ede7b9148bb5b91d744c402c3705fb410932757ca1769d04"
+    },
+    {
+      "path": "tests/test_redteam.py",
+      "sha256": "5b4afc1895931d4ed554fa709aef1978fbf3efdf8870368f4d8a087a86b29c5f"
+    },
+    {
+      "path": "tests/test_release_candidate.py",
+      "sha256": "1061948af770121005a49a667ead9a9302d597a3e31bb4244eb0e12679124759"
+    },
+    {
+      "path": "tests/test_workflow_evaluation.py",
+      "sha256": "f2edebd491753af7c49defef8480ce0081db5ef6aa77109a9577b8a2f7d5b2ff"
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "9f11075c50e74b4240b0eb8eb911ddfa9e51c984fcc9620199df8d805871b3ed"
+    }
+  ],
+  "excluded": [
+    "Git history and metadata",
+    "private .env, cloud state and credentials",
+    "generated artifacts and run evidence",
+    "new supplied v2 presentation and technical HTML pending identifier/provenance review",
+    "external Cowork materials",
+    "presenter scripts, talk tracks, timing and internal alignment documents"
+  ]
+}

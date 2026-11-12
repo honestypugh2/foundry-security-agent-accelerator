@@ -1,0 +1,8 @@
+{
+  "classification": "SYNTHETIC",
+  "source_id": "equipment-001",
+  "entitlement": "employee",
+  "policy_version": "equipment-policy/1",
+  "content": "Equipment requests up to 1500 credits need independent human approval.",
+  "note": "The deterministic fixture lives in retrieval.py; this is a participant-readable specimen."
+}

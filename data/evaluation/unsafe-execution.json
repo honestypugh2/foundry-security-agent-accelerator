@@ -1,0 +1,7 @@
+{
+  "case_id": "synthetic-unsafe-execution",
+  "verdicts": [{"evaluator": "synthetic", "outcome": "PASS"}],
+  "executions": [
+    {"attempt_id": "synthetic", "tool": "synthetic-write", "attempted": true, "blocked": false, "executed": true}
+  ]
+}

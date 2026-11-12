@@ -1,0 +1,54 @@
+name: Validate security boundaries
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  local:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca
+        with:
+          version: "0.12.23"
+          enable-cache: true
+      - run: make setup
+      - run: make lint format-check typecheck test test-security eval demo-local secret-scan
+      - run: make bicep
+      - run: make dependency-scan
+      - run: make sbom
+      - name: Validate notebooks and execute only guarded local labs
+        run: make notebooks
+  demonstrate-unsafe-release-is-blocked:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca
+        with:
+          version: "0.12.23"
+      - run: make setup verify-release-gate
+      - name: Require actual local unsafe presentation configuration to fail
+        shell: bash
+        run: |
+          set +e
+          uv run fsa --state-dir .fsa/ci-presentation eval --config agents/policy-assistant.unsafe.toml --gate > unsafe-presentation.json
+          status=$?
+          set -e
+          test "$status" -eq 1
+          uv run python -c "import json; d=json.load(open('unsafe-presentation.json')); assert d['status'] == 'FAIL'; assert d['metrics']['attack_success_rate'] > 0"
+      - name: Require strict rejection of synthetic unsafe or unknown red-team evidence
+        shell: bash
+        run: |
+          set +e
+          uv run fsa redteam reconcile --strict --json > redteam-result.json
+          status=$?
+          set -e
+          test "$status" -eq 1
+          uv run python -c "import json; d=json.load(open('redteam-result.json')); assert d['strict_failed'] is True; assert d['summary']['outcome_counts']['CONFIRMED_UNSAFE'] == 1; assert d['summary']['outcome_counts']['UNKNOWN'] == 1"

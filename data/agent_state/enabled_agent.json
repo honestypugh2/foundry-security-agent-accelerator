@@ -1,0 +1,8 @@
+{
+  "name": "synthetic-policy-agent",
+  "versions": {"latest": {"version": "1"}},
+  "state": "enabled",
+  "configurationState": "enabled",
+  "instanceIdentity": {"status": "active"},
+  "blueprint": {"status": "active"}
+}

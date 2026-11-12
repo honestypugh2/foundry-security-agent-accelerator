@@ -6,7 +6,7 @@ commands, licensing or resource cleanup. Use only generic examples; do not enter
 customer data or share native-console screenshots. If a link is unavailable,
 use the offline content rather than assuming a product capability.
 
-1. Open the self-contained documentation portal and presentation locally.
+1. Open the self-contained [technical portal](../index.html) locally.
 2. Select the local execution tab; identify SYNTHETIC and DRY_RUN labels.
 3. Use the policy/approval/write explorer to locate independent approval.
 4. Compare a safe final answer with a case containing unsafe execution.

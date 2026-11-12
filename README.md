@@ -115,12 +115,11 @@ authorization. Read-only preflight cannot establish every permission, quota,
 license, or network fact; unresolved checks stay unknown.
 
 The default selected workload is a **prompt agent**, not a hosted agent.
-The SDK boundary is tested with injected clients; a separate authorized
-synthetic live rehearsal also verified Search, Content Safety and pinned agent
-invocation. It stopped at `AWAITING_APPROVAL` with no writer call. See the
-[dated service results](docs/APEX_AZURE_LIVE_RESULTS.md), not a fresh health
-guarantee. Foundry IQ retrieval and current Monitor ingestion remain unverified;
-ordinary Search is not Foundry IQ. This is not native Agent 365/Defender/Purview validation.
+Validate your own Search, Content Safety and pinned Foundry agent through the
+authorized live lab. The governed request should stop at `AWAITING_APPROVAL`
+without a writer call. Verify Monitor ingestion independently; ordinary Search
+is not Foundry IQ, and IQ discovery does not validate retrieval.
+Application success is not native Agent 365/Defender/Purview validation.
 Azure Government configuration support does not prove Foundry or Agent 365
 feature availability. GCC, GCC High and DoD are distinct from Azure clouds.
 
@@ -156,7 +155,8 @@ uv run fsa azure agent-status
 
 Saved input always says offline / SIMULATED. Runtime, developer configuration and
 Entra identity/blueprint states are interpreted independently, including legacy
-exceptions. This is not a registry query. See [extension guide](docs/AGENT365_EXTENSION.md).
+exceptions. This is not a registry query. See the
+[integration guide](docs/agent365/integration-architecture.md).
 
 ## Reference: evaluation and evidence
 
@@ -188,13 +188,8 @@ evaluations and upstream OTel JSON are explicit open-source fallbacks; standard
 OTLP collector export is also available by configuration. No Azure service error
 automatically switches to a fallback.
 
-Delivery records: [implementation status](IMPLEMENTATION_STATUS.md),
-[measured validation](VALIDATION_EVIDENCE.md), and
-[L600 technical validation](L600_TECHNICAL_VALIDATION.md).
-The [requirements-to-code gap analysis](REQUIREMENTS_GAP_ANALYSIS.md) compares the
-new v0.2 specification without claiming its reference runtime or unsafe benchmark.
-The 16-case same-workflow gate, six scenes and physical 23-slide main deck are
-implemented. See [seven-layer reconciliation](docs/evaluations/redteam-reconciliation.md)
+See [evaluation outcomes and gates](docs/evaluations/framework.md) and
+[seven-layer reconciliation](docs/evaluations/redteam-reconciliation.md)
 for schemas, strict semantics and raw-evidence retention.
 
 `evaluate` runs synthetic regression cases: expected denials and missing-evidence
@@ -206,16 +201,15 @@ and human adjudications are retained separately.
 
 ## Workshop reference material
 
-- [Standalone mission-control presentation](APEX_Foundry_Security_Agent365_Nov12_2026.html)
+- [Documentation index](docs/README.md)
 - [Technical portal](docs/index.html)
 - [Participant Azure lab](docs/participant-lab/azure-live-lab.md)
 - [Local fallback](docs/participant-lab/local-fallback.md)
 - [Six-pillar control matrix](docs/security/six-pillar-control-matrix.md)
-- [Current capability status](IMPLEMENTATION_STATUS.md)
-- [Measured validation evidence](VALIDATION_EVIDENCE.md)
-- [Repository reuse assessment](REUSE_ASSESSMENT.md)
+- [Agent 365 integration guide](docs/agent365/integration-architecture.md)
+- [Security model and reporting](SECURITY.md)
 
-Open the HTML files directly, or use `make presentation` and `make docs`.
+Open the technical portal directly, or use `make docs`.
 Core content is offline. Reference links require internet.
 
 ## Maintainers: validation and infrastructure
@@ -240,11 +234,10 @@ environment/OIDC deployment is documented but requires authorized setup.
 
 ## License and evidence boundaries
 
-Original implementation: [MIT](LICENSE). The requested repositories' license
-files were explicitly reviewed (MIT), even though GitHub's metadata initially
-reported null. Their architecture is referenced, with an adapted Search pattern
-credited in [attribution](docs/reuse-and-attribution.md). Internal source materials are not
-included or represented as reviewed unless actually accessible.
+Original implementation: [MIT](LICENSE). See
+[reuse and attribution](docs/reuse-and-attribution.md) for implementation references
+and adapted patterns. Private build records and presenter materials are not
+part of the workshop source.
 Live Azure execution, Agent 365 ingestion, Defender/Purview signals and
 government-cloud parity must be verified separately. Consult the status
-and evidence files rather than inferring readiness from a demo.
+and evidence guides rather than inferring readiness from a demo.

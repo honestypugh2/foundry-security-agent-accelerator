@@ -9,7 +9,7 @@ are equivalent: `uv run python -m fsa agent365 preflight`.
 Use an explicitly configured private `FSA_MODE=azure` for authorized nested
 Agent 365 status reads; the top-level global mode is not forwarded to this
 subparser. No notebook or command automatically changes consent/governance.
-See [integration status](../AGENT365_INTEGRATION_STATUS.md) for evidence labels,
+See the [integration guide](../agent365/integration-architecture.md#interpreting-evidence) for evidence labels,
 [troubleshooting](troubleshooting.md), and [cleanup](cleanup.md).
 
 Read [the integration source](https://learn.microsoft.com/azure/foundry/agents/concepts/agent-365-integration)

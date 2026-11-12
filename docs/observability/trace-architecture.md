@@ -1,4 +1,36 @@
-# Azure-first observability with explicit open-source alternatives
+# Observability: traces, correlation and delivery
+
+## Follow a local request
+
+Run the [Operate lab](../../notebooks/04_operate_traces_and_audit.ipynb).
+Each request has a validated UUID correlation ID, preventing path traversal in
+artifact names. Every span carries `correlation.id`; the root records mode and
+the service resource records name/version. W3C trace context is separate from
+the application correlation ID.
+
+Audit records retain sequence, correlation, event, redacted data and chained
+hashes. The action fingerprint binds the proposal, not the model summary.
+Evaluation `case_id` binds normalized results to dataset cases. None of these
+is a Microsoft Agent Registry or Defender/Purview entity identifier.
+Cross-product correlation needs actual product IDs, scope and observation time.
+
+## Check completeness, not just a successful answer
+
+The full governed path requires input-security, retrieve, security, tool, model,
+policy, approval and writer stages:
+
+```bash
+uv run fsa trace-check --trace artifacts/<correlation-id>.spans.jsonl
+```
+
+An unapproved Azure request correctly lacks approval/writer stages and cannot
+pass the full-write completeness gate. The check inspects supplied span names;
+it does not authenticate the file or prove absence of uninstrumented actions.
+Correlate it with the audit and an independently retained head.
+
+Missing required stages or empty/partial workspace results mean
+INSUFFICIENT_EVIDENCE. Export failure fails the command while retaining local
+artifacts. Neither an exporter return nor a model's description proves ingestion.
 
 ## Azure path
 

@@ -5,6 +5,7 @@ import ast
 import os
 from importlib import import_module
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import nbformat
 from jupyter_client import KernelManager
@@ -105,13 +106,19 @@ def main() -> None:
         notebook = validate(path)
         if args.execute_local and MODES[path.name] == "local":
             notebook.cells.insert(0, nbformat.v4.new_code_cell(GUARD))
-            NotebookClient(
-                notebook,
-                timeout=120,
-                kernel_name="python3",
-                km=KernelManager(transport="ipc" if os.name == "posix" else "tcp"),
-                resources={"metadata": {"path": str(ROOT)}},
-            ).execute(cleanup_kc=True)
+            with TemporaryDirectory(prefix="fsa-notebook-") as runtime:
+                manager = KernelManager(
+                    transport="ipc" if os.name == "posix" else "tcp",
+                    ip=str(Path(runtime) / "kernel-ipc") if os.name == "posix" else "127.0.0.1",
+                    connection_file=str(Path(runtime) / "connection.json"),
+                )
+                NotebookClient(
+                    notebook,
+                    timeout=120,
+                    kernel_name="python3",
+                    km=manager,
+                    resources={"metadata": {"path": str(ROOT)}},
+                ).execute(cleanup_kc=True)
             executed += 1
         print(f"PASS: {path.name} ({MODES[path.name]}; source unchanged)")
     print(f"Validated {len(paths)} notebooks; executed {executed} local; Azure excluded.")

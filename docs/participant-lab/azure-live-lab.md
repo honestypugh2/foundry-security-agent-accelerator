@@ -8,10 +8,10 @@ The following service calls require your own authorization and may incur cost.
 
 Duration 20-45 minutes; L300-L400. Use [notebook 01](../../notebooks/01_foundry_agent_live.ipynb)
 after [setup](../../notebooks/00_environment_setup.ipynb).
-The [12 November live test](../APEX_AZURE_LIVE_RESULTS.md) observed the existing
-Search/Foundry path successfully. Monitor ingestion remains unverified and
-Foundry IQ has no configured knowledge base. Historical observations elsewhere
-are not fresh health checks. No resources need to be recreated for the core path.
+Verify the existing Search/Foundry path in your own authorized environment.
+Monitor ingestion and Foundry IQ retrieval each need independent evidence;
+neither follows from a working ordinary Search query. No resources need to be
+recreated when the required existing services are already configured.
 
 The notebook now runs the bounded end-to-end live validator. Its status is
 PARTIAL if telemetry is missing; this is not a full integration PASS.

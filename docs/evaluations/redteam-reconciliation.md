@@ -55,4 +55,4 @@ raw prompts/responses; keep them private and review data handling before sharing
 
 `fsa evidence` inventories saved-file presence only. It cannot authenticate action
 records, certify trace completeness or turn saved results into platform observations.
-The [security release gate](release-gates.md) is a separate, stricter contract.
+The [security release gate](framework.md#apply-a-fail-closed-gate) is a separate, stricter contract.

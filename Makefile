@@ -1,6 +1,6 @@
 .PHONY: setup lint format-check typecheck test test-security eval verify-release-gate azure-preflight \
  azure-provision agent-deploy agent-run agent365-preflight agent365-status agent365-verify \
- protect-check prove-eval operate-trace demo-azure demo-local docs presentation validate \
+ protect-check prove-eval operate-trace demo-azure demo-local docs validate \
  azure-cleanup bicep dependency-scan secret-scan sbom notebooks
 
 setup:
@@ -46,8 +46,6 @@ demo-local:
 	uv run fsa demo --mode local --demo-approval
 docs:
 	uv run fsa open docs
-presentation:
-	uv run fsa open presentation
 bicep:
 	az bicep build --file infra/main.bicep --stdout > /dev/null
 	az bicep build --file infra/live.bicep --stdout > /dev/null

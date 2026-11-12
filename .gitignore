@@ -165,6 +165,8 @@ docs/COWORK_VSCODE_ALIGNMENT.md
 
 *.log
 .ipynb_checkpoints/
+kernel-ipc-*
+kernel-ips*
 
 APEX_*
 L600_*
@@ -173,4 +175,36 @@ REQUIREMENTS_GAAP*
 REUSE_*
 VALIDATION_EVIDENCE.md
 VSCODE_REPOSITORY*
-IMPLEMENTATION_STATUS.md
+IMPLEMENTATION_*.md
+REQUIREMENTS_GAP_ANALYSIS.md
+RELEASE_MANIFEST.json
+
+# Local build records and originals consolidated into workshop references.
+docs/research/
+docs/COWORK_LAB_ALIGNMENT.md
+docs/AGENT365_INTEGRATION_STATUS.md
+docs/AGENT365_EXTENSION.md
+docs/LIVE_AZURE_SETUP.md
+docs/observability/correlation-model.md
+docs/observability/trace-completeness.md
+docs/evaluations/asr-limitations.md
+docs/evaluations/human-adjudication.md
+docs/evaluations/release-gates.md
+docs/evaluations/verdict-semantics.md
+docs/security/mcp-security.md
+docs/security/multi-agent-delegation.md
+docs/security/egress-security.md
+docs/security/evidence-assurance.md
+docs/clouds/compensating-controls.md
+docs/clouds/cross-cloud-governance.md
+docs/clouds/feature-availability.md
+docs/architecture/cross-cloud-governance-pattern.md
+docs/agent365/defender-integration.md
+docs/agent365/purview-integration.md
+docs/agent365/governance.md
+docs/agent365/identity-and-permissions.md
+docs/agent365/publishing-and-registry.md
+docs/agent365/telemetry.md
+docs/agent365/prerequisites.md
+docs/agent365/troubleshooting.md
+scripts/validate_html_browser.py

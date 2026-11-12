@@ -23,15 +23,17 @@ FILES = (
     ".pre-commit-config.yaml",
     ".github/workflows/validate.yml",
     "docs/assets/readme-banner.png",
+)
+SUFFIXES = {".py", ".json", ".jsonl", ".toml", ".md", ".html", ".ipynb", ".bicep", ".txt"}
+LOCAL_ONLY_FILES = {
     "APEX_Foundry_Security_Agent365_Nov12_2026.html",
+    "RELEASE_MANIFEST.json",
+    "IMPLEMENTATION_PLAN.md",
     "IMPLEMENTATION_STATUS.md",
     "VALIDATION_EVIDENCE.md",
     "L600_TECHNICAL_VALIDATION.md",
     "REQUIREMENTS_GAP_ANALYSIS.md",
     "REUSE_ASSESSMENT.md",
-)
-SUFFIXES = {".py", ".json", ".jsonl", ".toml", ".md", ".html", ".ipynb", ".bicep", ".txt"}
-PRIVATE_DOCUMENTS = {
     "docs/APEX_ALIGNMENT_BASELINE.md",
     "docs/APEX_COWORK_ARTIFACT_INVENTORY.md",
     "docs/APEX_AUDIENCE_RELEASE_CANDIDATE.md",
@@ -39,6 +41,35 @@ PRIVATE_DOCUMENTS = {
     "docs/APEX_DEMO_COMMANDS.md",
     "docs/TOMORROW_DRY_RUN_CHECKLIST.md",
     "docs/COWORK_VSCODE_ALIGNMENT.md",
+    "docs/COWORK_LAB_ALIGNMENT.md",
+    "docs/APEX_VALIDATION_RESULTS.md",
+    "docs/APEX_AZURE_LIVE_RESULTS.md",
+    "docs/AGENT365_INTEGRATION_STATUS.md",
+    "docs/AGENT365_EXTENSION.md",
+    "docs/LIVE_AZURE_SETUP.md",
+    "docs/observability/correlation-model.md",
+    "docs/observability/trace-completeness.md",
+    "docs/evaluations/asr-limitations.md",
+    "docs/evaluations/human-adjudication.md",
+    "docs/evaluations/release-gates.md",
+    "docs/evaluations/verdict-semantics.md",
+    "docs/security/mcp-security.md",
+    "docs/security/multi-agent-delegation.md",
+    "docs/security/egress-security.md",
+    "docs/security/evidence-assurance.md",
+    "docs/clouds/compensating-controls.md",
+    "docs/clouds/cross-cloud-governance.md",
+    "docs/clouds/feature-availability.md",
+    "docs/architecture/cross-cloud-governance-pattern.md",
+    "docs/agent365/defender-integration.md",
+    "docs/agent365/purview-integration.md",
+    "docs/agent365/governance.md",
+    "docs/agent365/identity-and-permissions.md",
+    "docs/agent365/publishing-and-registry.md",
+    "docs/agent365/telemetry.md",
+    "docs/agent365/prerequisites.md",
+    "docs/agent365/troubleshooting.md",
+    "scripts/validate_html_browser.py",
 }
 
 
@@ -55,13 +86,17 @@ def prepare(output: Path) -> dict[str, object]:
             for path in (ROOT / directory).rglob("*")
             if path.is_file()
             and path.suffix in SUFFIXES
-            and path.relative_to(ROOT).as_posix() not in PRIVATE_DOCUMENTS
-            and not path.is_relative_to(ROOT / "docs" / "demo")
+            and not any(
+                path.is_relative_to(ROOT / "docs" / directory) for directory in ("demo", "research")
+            )
             and not any(
                 part.startswith(".") or part == "__pycache__"
                 for part in path.relative_to(ROOT).parts
             )
         )
+    candidates = {
+        path for path in candidates if path.relative_to(ROOT).as_posix() not in LOCAL_ONLY_FILES
+    }
     output.mkdir(parents=True, exist_ok=False)
     entries: list[dict[str, str]] = []
     for path in sorted(candidates):
@@ -84,6 +119,7 @@ def prepare(output: Path) -> dict[str, object]:
             "new supplied v2 presentation and technical HTML pending identifier/provenance review",
             "external Cowork materials",
             "presenter scripts, talk tracks, timing and internal alignment documents",
+            "build/implementation records, local validation evidence and retired short notes",
         ],
     }
     (output / "RELEASE_MANIFEST.json").write_text(json.dumps(manifest, indent=2) + "\n")

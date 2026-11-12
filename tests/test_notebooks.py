@@ -1,8 +1,11 @@
 import importlib.util
+import os
+import sys
 from pathlib import Path
 
 import nbformat
 import pytest
+from jupyter_client import KernelManager
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
@@ -42,3 +45,31 @@ def test_notebook_rejects_leaked_outputs_or_unsafe_ci_contract(
     nbformat.write(notebook, target)
     with pytest.raises(ValueError):
         validator.validate(target)
+
+
+@pytest.mark.skipif(os.name != "posix", reason="POSIX IPC artifact cleanup")
+def test_notebook_failure_cleans_private_kernel_artifacts(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    artifacts: list[Path] = []
+
+    class FailingClient:
+        def __init__(self, *args: object, **kwargs: object) -> None:
+            manager = kwargs["km"]
+            assert isinstance(manager, KernelManager)
+            prefix = Path(manager.ip)
+            assert prefix.is_absolute()
+            assert Path(manager.connection_file).parent == prefix.parent
+            artifact = Path(f"{prefix}-1")
+            artifact.touch()
+            artifacts.append(artifact)
+
+        def execute(self, **kwargs: object) -> None:
+            raise RuntimeError("forced notebook execution failure")
+
+    monkeypatch.setattr(validator, "NotebookClient", FailingClient)
+    monkeypatch.setattr(sys, "argv", ["validate_notebooks.py", "--execute-local"])
+    with pytest.raises(RuntimeError, match="forced notebook"):
+        validator.main()
+    assert artifacts
+    assert all(not artifact.exists() and not artifact.parent.exists() for artifact in artifacts)

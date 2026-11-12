@@ -64,9 +64,11 @@ Clear all outputs before sharing.
 
 Notebook 02 has an additional OFF-by-default Azure Search/moderation branch; CI
 executes only its local/default path under network denial. Notebook 01 uses the
-bounded end-to-end live validator. See the [dated real-service results](../APEX_AZURE_LIVE_RESULTS.md)
-and [locally staged story data](../../data/synthetic/demo-search-documents.json).
-Ordinary Search is not Foundry IQ; no IQ knowledge base was found in the tested environment.
+bounded end-to-end live validator. Configure your own authorized environment
+using the [Azure lab](azure-live-lab.md).
+[Locally staged story data](../../data/synthetic/demo-search-documents.json)
+is not automatically uploaded. Ordinary Search is not Foundry IQ; independently
+verify knowledge-base configuration and retrieval before claiming IQ success.
 
 See [troubleshooting](troubleshooting.md), [cleanup](cleanup.md), and the
 [local exercise commands](local-fallback.md).

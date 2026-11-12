@@ -47,6 +47,13 @@ def test_snapshot_keeps_labs_but_excludes_local_presenter_material(
     monkeypatch.setitem(module["prepare"].__globals__, "ROOT", tmp_path)
     private = (
         "PUBLIC_RELEASE_READINESS.md",
+        "IMPLEMENTATION_STATUS.md",
+        "REQUIREMENTS_GAP_ANALYSIS.md",
+        "VALIDATION_EVIDENCE.md",
+        "APEX_Foundry_Security_Agent365_Nov12_2026.html",
+        "docs/AGENT365_INTEGRATION_STATUS.md",
+        "docs/observability/correlation-model.md",
+        "docs/research/source-to-code-mapping.md",
         "docs/demo/live-presenter-runbook.md",
         "docs/demo/live-presenter-exact-script.md",
         "docs/demo/future-talk-track.md",

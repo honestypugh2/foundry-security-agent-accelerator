@@ -41,7 +41,7 @@ prove-eval: eval
 operate-trace:
 	uv run fsa trace-check $(if $(TRACE),--trace "$(TRACE)",)
 demo-azure:
-	uv run fsa demo --mode azure
+	uv run fsa demo --mode azure --profile presentation --authorize
 demo-local:
 	uv run fsa demo --mode local --demo-approval
 docs:
@@ -56,5 +56,6 @@ secret-scan:
 sbom:
 	uv export --frozen --all-extras --all-groups --format cyclonedx1.5 --output-file artifacts/sbom.cdx.json > /dev/null
 notebooks:
+	uv run python scripts/render_reference_architecture.py --check
 	uv run python scripts/validate_notebooks.py --execute-local
 validate: lint format-check typecheck test test-security eval verify-release-gate demo-local bicep secret-scan notebooks

@@ -31,6 +31,9 @@ def test_lifecycle_persists_isolated_honest_story(tmp_path: Path) -> None:
     assert len(first["resource_access_before"]) == 2
     assert all(result["status"] == "BLOCKED" for result in first["resource_access_before"])
     assert all(result["status"] == "READ_ONLY" for result in first["resource_access_after"])
+    assert first["out_of_package_access"]["status"] == "BLOCKED"
+    assert first["write_access"]["status"] == "BLOCKED"
+    assert first["access_after_rejected_update"]["status"] == "READ_ONLY"
     assert first["local_access_package"]["duration_days"] == 180
     assert first["run_id"] != second["run_id"]
     report_path = Path(str(first["report_path"]))

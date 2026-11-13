@@ -144,8 +144,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("operation", choices=("preflight", "status", "verify"))
     parser.add_argument("--preview-api", action="store_true")
     parser.add_argument("--evidence", type=Path)
+    parser.add_argument("--profile", choices=("equipment", "presentation"), default="equipment")
     args = parser.parse_args(argv)
     settings = Settings()
+    if args.profile == "presentation":
+        settings = settings.model_copy(
+            update={
+                "agent_name": settings.presentation_agent_name,
+                "agent_version": settings.presentation_agent_version,
+            }
+        )
     if args.operation == "preflight":
         print(json.dumps(prerequisites(settings), indent=2))
         return 1

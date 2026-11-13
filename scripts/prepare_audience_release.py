@@ -23,6 +23,13 @@ FILES = (
     ".pre-commit-config.yaml",
     ".github/workflows/validate.yml",
     "docs/assets/readme-banner.png",
+    "docs/assets/architecture/six-plane-reference.drawio",
+    "docs/assets/architecture/six-plane-reference.svg",
+    "docs/assets/architecture/six-plane-reference.html",
+    "docs/assets/architecture/governed-function-flow.drawio",
+    "docs/assets/architecture/governed-function-flow.svg",
+    "docs/assets/screenshots/defender-synthetic-inventory.png",
+    "docs/assets/screenshots/foundry-function-tools.png",
 )
 SUFFIXES = {".py", ".json", ".jsonl", ".toml", ".md", ".html", ".ipynb", ".bicep", ".txt"}
 LOCAL_ONLY_FILES = {

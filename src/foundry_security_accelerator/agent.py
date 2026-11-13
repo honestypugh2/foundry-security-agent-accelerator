@@ -1,4 +1,4 @@
-"""Microsoft Foundry prompt adapter, stable azure-ai-projects 2.10.0."""
+"""Microsoft Foundry prompt adapter using the stable Azure AI Projects SDK."""
 
 from collections.abc import Callable
 from contextlib import ExitStack
@@ -14,6 +14,29 @@ from .identity import TenantCredential
 
 class ModelAdapter(Protocol):
     def invoke(self, prompt: str) -> str: ...
+
+
+def project_client(settings: Settings, stack: ExitStack) -> AIProjectClient:
+    """Share tenant-pinned credentials and bounded transport across both agent profiles."""
+    credential = stack.enter_context(
+        DefaultAzureCredential(
+            authority=settings.authority,
+            exclude_interactive_browser_credential=True,
+            exclude_shared_token_cache_credential=True,
+            additionally_allowed_tenants=[],
+        )
+    )
+    return stack.enter_context(
+        AIProjectClient(
+            endpoint=settings.project_endpoint,
+            credential=TenantCredential(credential, settings.tenant_id),
+            credential_scopes=[settings.project_scope],
+            retry_total=0,
+            connection_timeout=15,
+            read_timeout=60,
+            logging_enable=False,
+        )
+    )
 
 
 class LocalAgent:
@@ -35,25 +58,7 @@ class FoundryAdapter:
     def _client(self, stack: ExitStack) -> AIProjectClient:
         if self._factory is not None:
             return self._factory(stack)
-        credential = stack.enter_context(
-            DefaultAzureCredential(
-                authority=self.settings.authority,
-                exclude_interactive_browser_credential=True,
-                exclude_shared_token_cache_credential=True,
-                additionally_allowed_tenants=[],
-            )
-        )
-        return stack.enter_context(
-            AIProjectClient(
-                endpoint=self.settings.project_endpoint,
-                credential=TenantCredential(credential, self.settings.tenant_id),
-                credential_scopes=[self.settings.project_scope],
-                retry_total=0,
-                connection_timeout=15,
-                read_timeout=60,
-                logging_enable=False,
-            )
-        )
+        return project_client(self.settings, stack)
 
     def invoke(self, prompt: str) -> str:
         if not self.settings.agent_version:

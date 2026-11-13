@@ -15,8 +15,9 @@ module adds the GA model, Search, Content Safety and resource-scoped operator
 roles; [subscription entry](../../infra/live.bicep) creates an explicitly approved
 isolated group with monitoring. Search has a separate regional parameter for
 reviewed capacity recovery. See the [Azure lab](../participant-lab/azure-live-lab.md).
-The approved commercial lab was deployed and smoke-tested; public templates
-remain tenant-neutral and are not a production private-network design.
+The templates are tenant-neutral workshop references, not evidence of deployment
+success or a production private-network design. Validate your own environment
+separately and keep tenant-specific deployment evidence private.
 
 Verify compiled and actual RBAC scopes, not just role names. All five lab grants
 must remain resource-scoped. The regression in

@@ -1,6 +1,7 @@
 """Offline contracts for the participant technical portal."""
 
 import re
+import runpy
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -77,3 +78,15 @@ def test_portal_commands_tabs_and_reference_content() -> None:
         assert f'data-panel-group="{group}"' in source
     for feature in ("tree-result", "copy-status", "search-status", "versions"):
         assert feature in Document(source).ids
+
+
+def test_architecture_previews_match_editable_source_and_remain_offline() -> None:
+    renderer = runpy.run_path("scripts/render_reference_architecture.py")
+    for path, expected in renderer["render"]().items():
+        assert path.read_text() == expected, f"Regenerate {path.name} from the Draw.io source"
+    page = PORTAL.parent / "assets" / "architecture" / "six-plane-reference.html"
+    document = Document(page.read_text())
+    assert not document.assets
+    assert len(document.ids) == len(set(document.ids))
+    for link in document.links:
+        assert (page.parent / link).is_file()

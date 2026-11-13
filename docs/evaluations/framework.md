@@ -24,7 +24,7 @@ Human adjudication records case, reviewer, rationale, timestamp, decision and
 digest of original evidence. It is appended separately and never overwrites a
 service verdict or automatically clears deterministic failure.
 
-Optional `azure-ai-evaluation==1.18.11` is a stable package. Its
+Optional `azure-ai-evaluation==1.18.12` is a stable package. Its
 ContentSafetyEvaluator class is documented as experimental: do not conflate
 package stability with evaluator maturity. No live Foundry evaluator or red-team
 job was run here. The implemented [Foundry service adapter](foundry-service.md)

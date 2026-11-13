@@ -63,7 +63,22 @@ def test_snapshot_keeps_labs_but_excludes_local_presenter_material(
         "docs/COWORK_VSCODE_ALIGNMENT.md",
         ".presenter/portal-talk-track.md",
     )
-    public = ("src/workshop.py", "docs/participant-lab/local-fallback.md")
+    public = (
+        "src/workshop.py",
+        "docs/participant-lab/local-fallback.md",
+        "docs/assets/architecture/six-plane-reference.drawio",
+        "docs/assets/architecture/six-plane-reference.svg",
+        "docs/assets/architecture/six-plane-reference.html",
+        "docs/assets/architecture/governed-function-flow.drawio",
+        "docs/assets/architecture/governed-function-flow.svg",
+        "docs/assets/screenshots/defender-synthetic-inventory.png",
+        "docs/assets/screenshots/foundry-function-tools.png",
+    )
+    private += (
+        "docs/assets/screenshots/private-portal-capture.png",
+        "docs/assets/architecture/private-tenant-state.drawio",
+        "docs/research/native-evidence.svg",
+    )
     for relative in private + public:
         path = tmp_path / relative
         path.parent.mkdir(parents=True, exist_ok=True)

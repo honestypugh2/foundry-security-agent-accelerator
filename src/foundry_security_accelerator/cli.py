@@ -2,13 +2,17 @@
 
 import argparse
 import json
+import os
+import shutil
 import sys
 import webbrowser
+from collections.abc import Mapping
 from importlib.metadata import version
 from pathlib import Path
 from typing import Literal, cast
 
 from azure.core.exceptions import AzureError
+from openai import OpenAIError
 from pydantic import ValidationError
 
 from .audit import audit_failure_line
@@ -21,6 +25,29 @@ from .workflow import REQUIRED_STAGES, run
 
 def _print(value: object) -> None:
     print(json.dumps(value, indent=2, default=str))
+
+
+def _print_demo(
+    value: Mapping[str, object], *, mode: str, question: str, output_format: str, color: str
+) -> None:
+    terminal = sys.stdout.isatty()
+    if output_format == "json" or (output_format == "auto" and not terminal):
+        _print(value)
+        return
+    from .console import render_demo
+
+    use_color = "NO_COLOR" not in os.environ and (
+        color == "always" or (color == "auto" and terminal and os.environ.get("TERM") != "dumb")
+    )
+    print(
+        render_demo(
+            value,
+            mode=mode,
+            question=question,
+            color=use_color,
+            width=shutil.get_terminal_size(fallback=(100, 24)).columns,
+        )
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -60,6 +87,24 @@ def main(argv: list[str] | None = None) -> int:
     )
     ask.add_argument("--output", type=Path, default=Path("artifacts"))
     ask.add_argument("--profile", choices=("auto", "presentation", "equipment"), default="auto")
+    for output_parser in (demo, ask):
+        output_parser.add_argument(
+            "--authorize",
+            action="store_true",
+            help="Authorize live presentation model/data submission",
+        )
+        output_parser.add_argument(
+            "--format",
+            choices=("auto", "text", "json"),
+            default="auto",
+            help="Auto: readable terminal output, JSON when redirected",
+        )
+        output_parser.add_argument(
+            "--color",
+            choices=("auto", "always", "never"),
+            default="auto",
+            help="Terminal colors; NO_COLOR disables colors",
+        )
     commands.add_parser("doctor")
     evaluate_parser = commands.add_parser("evaluate")
     evaluate_parser.add_argument("--mode", choices=("local", "azure"), default=global_args.mode)
@@ -158,6 +203,18 @@ def main(argv: list[str] | None = None) -> int:
         )
         return int(sys.version_info < (3, 12))
     if command in ("eval", "rehearse", "trace"):
+        if command == "trace" and parsed.mode == "azure":
+            from .presentation_live import saved_evidence
+
+            if parsed.operation == "show" and parsed.identifier is None:
+                raise ValueError("trace show requires a live scene or exact run ID")
+            _print(
+                saved_evidence(
+                    parsed.state_dir,
+                    parsed.identifier if parsed.operation == "show" else None,
+                )
+            )
+            return 0
         if parsed.mode != "local":
             raise ValueError(
                 "Workflow replay and rehearsal are local-only; use evaluate --mode azure "
@@ -312,16 +369,41 @@ def main(argv: list[str] | None = None) -> int:
                         cast(Path, parsed.state_dir),
                     )
                 )
-                _print(result)
+                _print_demo(
+                    result,
+                    mode=mode,
+                    question=parsed.question if command == "ask" else parsed.text,
+                    output_format=parsed.format,
+                    color=parsed.color,
+                )
                 return int(
                     result["status"] != "PASS"
                     if presentation_demo
                     else result["status"] in {"DENIED", "BLOCKED"}
                 )
         elif "--profile" in args and parsed.profile == "presentation":
-            raise PermissionError(
-                "Presentation corpus is local-only; Azure remains the verified equipment workflow"
+            if not parsed.authorize:
+                raise PermissionError("Azure presentation requires explicit --authorize")
+            from .config import Settings
+            from .presentation_live import run_question as live_question
+            from .presentation_live import run_scenes as live_scenes
+
+            settings = Settings(mode="azure")
+            live_result = (
+                live_scenes(settings, parsed.state_dir, authorized=True)
+                if command == "demo"
+                else live_question(
+                    settings, parsed.question, parsed.role, parsed.state_dir, authorized=True
+                )
             )
+            _print_demo(
+                live_result,
+                mode=mode,
+                question=parsed.question if command == "ask" else parsed.text,
+                output_format=parsed.format,
+                color=parsed.color,
+            )
+            return int(live_result["status"] in {"FAIL", "DENIED", "BLOCKED"})
         model = None
         from .config import Settings
 
@@ -349,7 +431,13 @@ def main(argv: list[str] | None = None) -> int:
             result["data_scope"] = (
                 "SYNTHETIC_EQUIPMENT_POLICY_ONLY; not authoritative email retention guidance"
             )
-        _print(result)
+        _print_demo(
+            result,
+            mode=mode,
+            question=request.text,
+            output_format=parsed.format,
+            color=parsed.color,
+        )
         return 0
     if command == "evaluate":
         if parsed.mode == "azure":
@@ -388,9 +476,14 @@ def main(argv: list[str] | None = None) -> int:
         if path is None:
             if parsed.expected_head is not None:
                 raise ValueError("--expected-head requires an explicit audit path")
-            from .presentation_runtime import latest_presentation
+            if parsed.mode == "azure":
+                from .presentation_live import saved_evidence
 
-            manifest = latest_presentation(cast(Path, parsed.state_dir))
+                manifest = saved_evidence(parsed.state_dir)
+            else:
+                from .presentation_runtime import latest_presentation
+
+                manifest = latest_presentation(cast(Path, parsed.state_dir))
             scenes = cast(list[dict[str, object]], manifest["scenes"])
             results: list[dict[str, object]] = []
             for scene in scenes:
@@ -398,7 +491,10 @@ def main(argv: list[str] | None = None) -> int:
                     Path(cast(str, scene["audit"])), cast(str, scene["audit_head"])
                 )
                 results.append(
-                    {"scene": scene["scene"], "outcome": "PASS" if broken is None else "FAIL"}
+                    {
+                        "scene": scene.get("scene_id", scene.get("scene")),
+                        "outcome": "PASS" if broken is None else "FAIL",
+                    }
                 )
             ok = bool(results) and all(item["outcome"] == "PASS" for item in results)
             _print({"outcome": "PASS" if ok else "FAIL", "audits": results})
@@ -445,6 +541,7 @@ def entrypoint() -> int:
         return main()
     except (
         AzureError,
+        OpenAIError,
         ValidationError,
         PermissionError,
         ValueError,

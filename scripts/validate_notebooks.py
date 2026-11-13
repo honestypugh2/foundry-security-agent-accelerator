@@ -20,6 +20,7 @@ MODES = {
     "04_operate_traces_and_audit.ipynb": "local",
     "05_agent365_extension.ipynb": "azure",
     "06_local_fallback.ipynb": "local",
+    "07_agent365_request_approval_publish.ipynb": "local",
 }
 GUARD = """
 import os
@@ -100,7 +101,7 @@ def main() -> None:
     args = parser.parse_args()
     paths = sorted((ROOT / "notebooks").glob("*.ipynb"))
     if {path.name for path in paths} != set(MODES):
-        raise ValueError("Expected exactly the seven reviewed participant notebooks")
+        raise ValueError("Expected exactly the reviewed participant notebook allowlist")
     executed = 0
     for path in paths:
         notebook = validate(path)

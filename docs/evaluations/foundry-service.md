@@ -1,7 +1,7 @@
 # Microsoft Foundry evaluation path
 
 Azure mode uses the stable Microsoft SDK:
-`azure-ai-evaluation==1.18.11`, `RelevanceEvaluator`, `GroundednessEvaluator`,
+`azure-ai-evaluation==1.18.12`, `RelevanceEvaluator`, `GroundednessEvaluator`,
 and `evaluate(..., azure_ai_project=..., fail_on_evaluator_errors=True)`.
 The judge is a real configured Azure model deployment; project result tracking
 is requested through the supported SDK. Nothing here is an emulated Foundry API.

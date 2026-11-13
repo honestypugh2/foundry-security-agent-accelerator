@@ -1,5 +1,9 @@
 # Deterministic offline lab
 
+Choose this explicit fallback when the Azure-first workshop prerequisites are
+unavailable. An Azure failure must be retained as a failure, not rewritten as
+local success. Notebook 06 stays local even in an otherwise Azure Live session.
+
 After installing dependencies once, local execution requires no Azure connection.
 Use Python 3.12 and the frozen lock; no Node.js is required.
 

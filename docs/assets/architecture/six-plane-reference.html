@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Foundry + Agent 365: one flow, six planes</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f1f5f9;color:#172b4d;font:17px/1.5 system-ui,sans-serif}
+main{max-width:1640px;margin:auto;padding:20px}a{color:#075985}button{font:inherit;cursor:pointer}
+header,.controls,.details{
+  background:#fff;border:1px solid #cbd5e1;border-radius:14px;padding:16px 20px}
+header p{margin:0}.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0}
+button{border:2px solid #0369a1;border-radius:8px;background:#eff6ff;
+  color:#0c4a6e;padding:8px 18px;min-height:44px}
+button:focus-visible,a:focus-visible{outline:3px solid #7e22ce;outline-offset:3px}
+.diagram{overflow-x:auto;border:1px solid #cbd5e1;border-radius:14px;background:white}
+.diagram svg{min-width:1050px}.details{margin-top:14px;min-height:140px}
+.details h1{font-size:24px;margin:0 0 8px}
+.details p{margin:0}#phase{font-weight:700;color:#075985}#status{margin-left:auto}
+nav{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px}noscript{display:block;padding:16px}
+@media print{.controls{display:none}.diagram{overflow:visible}
+  .diagram svg{min-width:0}body{background:white}}
+
+svg { display:block; width:100%; height:auto; background:#fff; font-family:Arial,sans-serif }
+text { fill:#172b4d }
+.edge { fill:none; stroke-linejoin:round }
+.flow-line { stroke-dasharray:9 7; animation:travel 1.4s linear infinite }
+.card { transition:stroke-width .15s }
+.step-card { animation:signal 18s linear infinite; animation-delay:var(--delay) }
+.interactive .step-card { animation:none }
+.interactive [data-node] { cursor:pointer; outline:none }
+.interactive [data-node]:focus-visible .card,
+.interactive [data-node].selected .card { stroke:#075985; stroke-width:5 }
+.interactive [data-node].selected text { fill:#0c4a6e }
+.paused .flow-line { animation-play-state:paused }
+@keyframes travel { to { stroke-dashoffset:-32 } }
+@keyframes signal { 0%,8% { stroke-width:5 } 12%,100% { stroke-width:2 } }
+@media(prefers-reduced-motion:reduce) {
+  .flow-line,.step-card { animation:none }
+  .card { transition:none }
+}
+
+</style></head><body><main>
+<header><p><strong>Interactive workshop architecture</strong> &mdash; conceptual animation only.
+No Azure calls, live signals, customer data, or production-readiness claim.</p>
+<nav aria-label="Architecture resources">
+<a href="six-plane-reference.drawio" download>Edit Draw.io source</a>
+<a href="six-plane-reference.svg">Animated SVG preview</a>
+<a href="../../architecture/overview.md">Implementation and evidence boundaries</a></nav></header>
+<div class="controls" aria-label="Animation controls">
+<button id="play" type="button" aria-pressed="false">Play</button>
+<button id="next" type="button">Next step</button>
+<button id="restart" type="button">Restart</button>
+<span id="phase"></span><span id="status" role="status" aria-live="off"></span></div>
+<p>Click a card, or Tab to it and press Enter/Space. Six surrounding planes:
+Entra, Agent 365, Purview, Defender, Monitor, and GitHub. Foundry is the central AI flow.</p>
+<div class="diagram" aria-label="Scrollable architecture diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1080" role="img" aria-labelledby="diagram-title diagram-description">
+<title id="diagram-title">Foundry + Agent 365: one flow, six planes</title>
+<desc id="diagram-description">Central caller-side Python and Azure Foundry flow, surrounded by Entra, Agent 365, Purview, Defender, Monitor, and GitHub. Dashed native relationships require separate verification. All writes are DRY_RUN.</desc>
+<style>
+svg { display:block; width:100%; height:auto; background:#fff; font-family:Arial,sans-serif }
+text { fill:#172b4d }
+.edge { fill:none; stroke-linejoin:round }
+.flow-line { stroke-dasharray:9 7; animation:travel 1.4s linear infinite }
+.card { transition:stroke-width .15s }
+.step-card { animation:signal 18s linear infinite; animation-delay:var(--delay) }
+.interactive .step-card { animation:none }
+.interactive [data-node] { cursor:pointer; outline:none }
+.interactive [data-node]:focus-visible .card,
+.interactive [data-node].selected .card { stroke:#075985; stroke-width:5 }
+.interactive [data-node].selected text { fill:#0c4a6e }
+.paused .flow-line { animation-play-state:paused }
+@keyframes travel { to { stroke-dashoffset:-32 } }
+@keyframes signal { 0%,8% { stroke-width:5 } 12%,100% { stroke-width:2 } }
+@media(prefers-reduced-motion:reduce) {
+  .flow-line,.step-card { animation:none }
+  .card { transition:none }
+}
+</style>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#0369a1"/></marker></defs>
+<rect width="1600" height="1080" fill="#fff"/>
+<text x="58.0" y="72.0" font-size="42" font-weight="700">Foundry + Agent 365: one flow, six planes</text>
+<text x="58.0" y="129.0" font-size="24" font-weight="400">One AI workflow. Six surrounding control planes. Independent enforcement and evidence.</text>
+<text x="58.0" y="187.0" font-size="22" font-weight="700">ACCESS     /     DO     /     HAPPENED     /     INTERVENE</text>
+<rect x="530.0" y="530.0" width="540.0" height="255.0" rx="16" fill="#f8fafc" stroke="#2563eb" stroke-width="2" stroke-dasharray="7 6"/>
+<text x="538.0" y="550.0" font-size="20" font-weight="700">AZURE SERVICES - not the caller process</text>
+<text x="58.0" y="990.0" font-size="20" font-weight="400">Solid: application/service path | Purple dashed: native relationship, verify separately | Gold dashed: CI, not deployment</text>
+<text x="58.0" y="1035.0" font-size="20" font-weight="400">Conceptual flow, not packet order. Handlers and approvals stay in caller. Synthetic roles are not Entra OBO. All writes: DRY_RUN.</text>
+<path id="u-i" d="M 800.0 290.0 C 800.0 290.0 800.0 320.0 800.0 320.0" class="edge flow-line" stroke="#0369A1" stroke-width="3" marker-end="url(#arrow)"/>
+<path id="i-r" d="M 800.0 390.0 C 800.0 390.0 800.0 420.0 800.0 420.0" class="edge flow-line" stroke="#0369A1" stroke-width="3" marker-end="url(#arrow)"/>
+<path id="r-p" d="M 800.0 510.0 C 800.0 510.0 800.0 575.0 800.0 575.0" class="edge flow-line" stroke="#0369A1" stroke-width="3" marker-end="url(#arrow)"/>
+<path id="p-s" d="M 800.0 650.0 C 800.0 650.0 800.0 680.0 800.0 680.0" class="edge flow-line" stroke="#0369A1" stroke-width="3" marker-end="url(#arrow)"/>
+<path id="e-r" d="M 440.0 332.5 C 495.0 332.5 495.0 447.0 550.0 447.0" class="edge flow-line" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/>
+<path id="r-a" d="M 550.0 465.0 L 495 465 L 495 875 L 550.0 875.0" class="edge flow-line" stroke="#15803D" stroke-width="3" marker-end="url(#arrow)"/>
+<path id="a365-p" d="M 440.0 582.5 C 495.0 582.5 495.0 612.5 550.0 612.5" class="edge" stroke="#7E22CE" stroke-width="2" stroke-dasharray="7 7"/>
+<path id="pv-a" d="M 440.0 832.5 C 495.0 832.5 495.0 905.0 550.0 905.0" class="edge" stroke="#7E22CE" stroke-width="2" stroke-dasharray="7 7"/>
+<path id="p-d" d="M 1050.0 612.5 C 1105.0 612.5 1105.0 332.5 1160.0 332.5" class="edge" stroke="#7E22CE" stroke-width="2" stroke-dasharray="7 7"/>
+<path id="r-m" d="M 1050.0 465.0 C 1105.0 465.0 1105.0 582.5 1160.0 582.5" class="edge flow-line" stroke="#2563EB" stroke-width="2" marker-end="url(#arrow)"/>
+<path id="gh-a" d="M 1160.0 832.5 C 1105.0 832.5 1105.0 875.0 1050.0 875.0" class="edge" stroke="#A16207" stroke-width="2" stroke-dasharray="7 7"/>
+<g data-node="user" data-kind="flow" aria-label="1. User"><title>A user starts a synthetic question. Animation illustrates responsibilities, not observed Azure activity or a protocol packet sequence.</title><rect class="card step-card" style="--delay:0s" x="550.0" y="220.0" width="500.0" height="70.0" rx="18" fill="#F0F9FF" stroke="#0369A1" stroke-width="2"/>
+<text x="570.0" y="246.0" font-size="23" font-weight="700">1. User</text>
+<text x="570.0" y="274.0" font-size="23" font-weight="400">Synthetic workshop question</text>
+</g>
+<g data-node="interface" data-kind="flow" aria-label="3. Application / agent interface"><title>The fsa CLI and explicitly opted-in notebooks select Azure or local mode. A service failure never silently becomes a local success.</title><rect class="card step-card" style="--delay:4s" x="550.0" y="320.0" width="500.0" height="70.0" rx="18" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="570.0" y="346.0" font-size="23" font-weight="700">3. Application / agent interface</text>
+<text x="570.0" y="374.0" font-size="23" font-weight="400">fsa CLI and opt-in notebooks</text>
+</g>
+<g data-node="runtime" data-kind="flow" aria-label="4. Governed Python runtime"><title>presentation_live.py runs a bounded serial function loop in the caller, not an Agent Framework host. Every proposed handler needs typed arguments and fresh policy authorization before execution.</title><rect class="card step-card" style="--delay:6s" x="550.0" y="420.0" width="500.0" height="90.0" rx="18" fill="#ECFEFF" stroke="#0E7490" stroke-width="2"/>
+<text x="570.0" y="446.0" font-size="23" font-weight="700">4. Governed Python runtime</text>
+<text x="570.0" y="474.0" font-size="23" font-weight="400">Authorize before every handler</text>
+<text x="570.0" y="502.0" font-size="23" font-weight="400">Caller-side SDK loop</text>
+</g>
+<g data-node="project" data-kind="flow" aria-label="5. Microsoft Foundry project"><title>The client checks the immutable agent definition, model and four function schemas before inference. Direct function schemas do not require a Toolbox; the playground does not execute this application&#x27;s Python handlers.</title><rect class="card step-card" style="--delay:8s" x="550.0" y="575.0" width="500.0" height="75.0" rx="18" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="570.0" y="601.0" font-size="23" font-weight="700">5. Microsoft Foundry project</text>
+<text x="570.0" y="629.0" font-size="23" font-weight="400">Reviewed, pinned prompt agent</text>
+</g>
+<g data-node="services" data-kind="flow" aria-label="6. Model + retrieval + schemas"><title>The model proposes a function call; the application authorizes and executes it. Search uses the approved content-pinned synthetic corpus and server-side filtering. Ordinary Search is not proof of Foundry IQ.</title><rect class="card step-card" style="--delay:10s" x="550.0" y="680.0" width="500.0" height="90.0" rx="18" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+<text x="570.0" y="706.0" font-size="23" font-weight="700">6. Model + retrieval + schemas</text>
+<text x="570.0" y="734.0" font-size="23" font-weight="400">Azure model and synthetic Search</text>
+<text x="570.0" y="762.0" font-size="23" font-weight="400">Function execution stays in client</text>
+</g>
+<g data-node="actions" data-kind="flow" aria-label="7. Governed data and actions"><title>Client policy gates the proposal before queueing. Approval is exact, independent, expiring and one-use. Synthetic role labels are not Entra OBO or enterprise human approval. The supplied writer records only local DRY_RUN receipts, never real business writes.</title><rect class="card step-card" style="--delay:12s" x="550.0" y="825.0" width="500.0" height="100.0" rx="18" fill="#F0FDF4" stroke="#15803D" stroke-width="2"/>
+<text x="570.0" y="851.0" font-size="23" font-weight="700">7. Governed data and actions</text>
+<text x="570.0" y="879.0" font-size="23" font-weight="400">Synthetic data; local approval queue</text>
+<text x="570.0" y="907.0" font-size="23" font-weight="400">Exact independent approval; DRY_RUN</text>
+</g>
+<g data-node="entra" data-kind="plane" aria-label="2. Microsoft Entra"><title>identity.py binds SDK authentication to the configured tenant. Effective resource permissions, Conditional Access and production agent identity require independent tenant evidence; synthetic workshop roles do not authenticate a user.</title><rect class="card step-card" style="--delay:2s" x="50.0" y="240.0" width="390.0" height="185.0" rx="18" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="70.0" y="268.0" font-size="16" font-weight="400">ACCESS / IDENTITY</text>
+<text x="70.0" y="300.0" font-size="23" font-weight="700">2. Microsoft Entra</text>
+<text x="70.0" y="332.0" font-size="23" font-weight="400">Agent authentication</text>
+<text x="70.0" y="364.0" font-size="23" font-weight="400">Least-privilege resource access</text>
+<text x="70.0" y="396.0" font-size="23" font-weight="400">Lab role labels are not OBO</text>
+</g>
+<g data-node="agent365" data-kind="plane" aria-label="Microsoft Agent 365"><title>Agent 365 provides a native registry and governance surface, subject to supported tenant, licensing, publication and consent. Repository settings, local lifecycle simulation or inventory screenshots do not prove native activity or a working lifecycle control.</title><rect class="card" style="--delay:0s" x="50.0" y="490.0" width="390.0" height="185.0" rx="18" fill="#FAF5FF" stroke="#7E22CE" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="70.0" y="518.0" font-size="16" font-weight="400">INTERVENE / GOVERNANCE</text>
+<text x="70.0" y="550.0" font-size="23" font-weight="700">Microsoft Agent 365</text>
+<text x="70.0" y="582.0" font-size="23" font-weight="400">Registry; owners and sponsors</text>
+<text x="70.0" y="614.0" font-size="23" font-weight="400">Lifecycle; native activity</text>
+<text x="70.0" y="646.0" font-size="23" font-weight="400">Verify independently</text>
+</g>
+<g data-node="purview" data-kind="plane" aria-label="Microsoft Purview"><title>Purview data protection and audit require independent native policy, connector, consent, permissions and event evidence. Application classifications and hash-linked local audit records are not Purview enforcement or ingestion proof.</title><rect class="card" style="--delay:0s" x="50.0" y="740.0" width="390.0" height="185.0" rx="18" fill="#FAF5FF" stroke="#7E22CE" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="70.0" y="768.0" font-size="16" font-weight="400">ACCESS + HAPPENED / DATA</text>
+<text x="70.0" y="800.0" font-size="23" font-weight="700">Microsoft Purview</text>
+<text x="70.0" y="832.0" font-size="23" font-weight="400">DSPM; DLP; audit; labels</text>
+<text x="70.0" y="864.0" font-size="23" font-weight="400">eDiscovery and compliance</text>
+<text x="70.0" y="896.0" font-size="23" font-weight="400">Native policies are separate</text>
+</g>
+<g data-node="defender" data-kind="plane" aria-label="9. Microsoft Defender"><title>Inventory, posture, activity and threat findings are distinct Defender observations. An inventory entry does not prove runtime ingestion, detection or protection. Observe only existing authorized evidence; this animation triggers no alerts or investigation.</title><rect class="card step-card" style="--delay:16s" x="1160.0" y="240.0" width="390.0" height="185.0" rx="18" fill="#FAF5FF" stroke="#7E22CE" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="1180.0" y="268.0" font-size="16" font-weight="400">HAPPENED + INTERVENE / THREATS</text>
+<text x="1180.0" y="300.0" font-size="23" font-weight="700">9. Microsoft Defender</text>
+<text x="1180.0" y="332.0" font-size="23" font-weight="400">AI posture; protection; inventory</text>
+<text x="1180.0" y="364.0" font-size="23" font-weight="400">XDR investigation and incidents</text>
+<text x="1180.0" y="396.0" font-size="23" font-weight="400">Verify native signals separately</text>
+</g>
+<g data-node="monitor" data-kind="plane" aria-label="8. Azure Monitor / App Insights"><title>observability.py records correlated application spans and supports explicitly approved export and read-only Logs queries. A sent span is not confirmed ingestion, and application telemetry is not native Agent 365 activity.</title><rect class="card step-card" style="--delay:14s" x="1160.0" y="490.0" width="390.0" height="185.0" rx="18" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+<text x="1180.0" y="518.0" font-size="16" font-weight="400">HAPPENED / OBSERVABILITY</text>
+<text x="1180.0" y="550.0" font-size="23" font-weight="700">8. Azure Monitor / App Insights</text>
+<text x="1180.0" y="582.0" font-size="23" font-weight="400">OpenTelemetry; correlation</text>
+<text x="1180.0" y="614.0" font-size="23" font-weight="400">Traces and diagnostics</text>
+<text x="1180.0" y="646.0" font-size="23" font-weight="400">Export is not ingestion proof</text>
+</g>
+<g data-node="github" data-kind="plane" aria-label="GitHub / CI/CD"><title>GitHub Actions runs deterministic tests, evaluation gates and source-pattern scans without Azure credentials or automatic deployment. Security failures and insufficient evidence block release even if a quality judge passes. Scans are not a complete confidentiality or penetration-test assessment.</title><rect class="card" style="--delay:0s" x="1160.0" y="740.0" width="390.0" height="185.0" rx="18" fill="#FFFBEB" stroke="#A16207" stroke-width="2"/>
+<text x="1180.0" y="768.0" font-size="16" font-weight="400">DO / RELEASE ASSURANCE</text>
+<text x="1180.0" y="800.0" font-size="23" font-weight="700">GitHub / CI/CD</text>
+<text x="1180.0" y="832.0" font-size="23" font-weight="400">Tests; evaluation release gates</text>
+<text x="1180.0" y="864.0" font-size="23" font-weight="400">Source scans; offline labs</text>
+<text x="1180.0" y="896.0" font-size="23" font-weight="400">No automatic cloud deployment</text>
+</g>
+</svg>
+</div>
+<section class="details" aria-labelledby="detail-title">
+<h1 id="detail-title">Select a flow step or control plane</h1>
+<p id="detail-text">Native governance relationships require independent evidence.</p></section>
+<noscript>The diagram remains readable without JavaScript. Open the SVG for a motion-reduced
+or animated preview; interaction requires JavaScript. All depicted writes remain DRY_RUN.</noscript>
+</main><script>
+"use strict";
+const nodes = [{"id": "user", "kind": "flow", "step": 1, "phase": "ACCESS", "title": "1. User", "details": "A user starts a synthetic question. Animation illustrates responsibilities, not observed Azure activity or a protocol packet sequence."}, {"id": "interface", "kind": "flow", "step": 3, "phase": "DO", "title": "3. Application / agent interface", "details": "The fsa CLI and explicitly opted-in notebooks select Azure or local mode. A service failure never silently becomes a local success."}, {"id": "runtime", "kind": "flow", "step": 4, "phase": "DO", "title": "4. Governed Python runtime", "details": "presentation_live.py runs a bounded serial function loop in the caller, not an Agent Framework host. Every proposed handler needs typed arguments and fresh policy authorization before execution."}, {"id": "project", "kind": "flow", "step": 5, "phase": "DO", "title": "5. Microsoft Foundry project", "details": "The client checks the immutable agent definition, model and four function schemas before inference. Direct function schemas do not require a Toolbox; the playground does not execute this application's Python handlers."}, {"id": "services", "kind": "flow", "step": 6, "phase": "DO", "title": "6. Model + retrieval + schemas", "details": "The model proposes a function call; the application authorizes and executes it. Search uses the approved content-pinned synthetic corpus and server-side filtering. Ordinary Search is not proof of Foundry IQ."}, {"id": "actions", "kind": "flow", "step": 7, "phase": "DO", "title": "7. Governed data and actions", "details": "Client policy gates the proposal before queueing. Approval is exact, independent, expiring and one-use. Synthetic role labels are not Entra OBO or enterprise human approval. The supplied writer records only local DRY_RUN receipts, never real business writes."}, {"id": "entra", "kind": "plane", "step": 2, "phase": "ACCESS", "title": "2. Microsoft Entra", "details": "identity.py binds SDK authentication to the configured tenant. Effective resource permissions, Conditional Access and production agent identity require independent tenant evidence; synthetic workshop roles do not authenticate a user."}, {"id": "agent365", "kind": "plane", "step": 0, "phase": "INTERVENE", "title": "Microsoft Agent 365", "details": "Agent 365 provides a native registry and governance surface, subject to supported tenant, licensing, publication and consent. Repository settings, local lifecycle simulation or inventory screenshots do not prove native activity or a working lifecycle control."}, {"id": "purview", "kind": "plane", "step": 0, "phase": "ACCESS / HAPPENED", "title": "Microsoft Purview", "details": "Purview data protection and audit require independent native policy, connector, consent, permissions and event evidence. Application classifications and hash-linked local audit records are not Purview enforcement or ingestion proof."}, {"id": "defender", "kind": "plane", "step": 9, "phase": "HAPPENED / INTERVENE", "title": "9. Microsoft Defender", "details": "Inventory, posture, activity and threat findings are distinct Defender observations. An inventory entry does not prove runtime ingestion, detection or protection. Observe only existing authorized evidence; this animation triggers no alerts or investigation."}, {"id": "monitor", "kind": "plane", "step": 8, "phase": "HAPPENED", "title": "8. Azure Monitor / App Insights", "details": "observability.py records correlated application spans and supports explicitly approved export and read-only Logs queries. A sent span is not confirmed ingestion, and application telemetry is not native Agent 365 activity."}, {"id": "github", "kind": "plane", "step": 0, "phase": "DO", "title": "GitHub / CI/CD", "details": "GitHub Actions runs deterministic tests, evaluation gates and source-pattern scans without Azure credentials or automatic deployment. Security failures and insufficient evidence block release even if a quality judge passes. Scans are not a complete confidentiality or penetration-test assessment."}];
+const sequence = nodes.filter(node => node.step).sort((a,b) => a.step-b.step);
+const cards = Array.from(document.querySelectorAll("[data-node]"));
+const svg = document.querySelector("svg");
+const play = document.getElementById("play");
+const status = document.getElementById("status");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+let index = 0;
+let timer = null;
+svg.classList.add("interactive", "paused");
+svg.setAttribute("role", "group");
+function select(node, announce) {
+  cards.forEach(card => {
+    const active = card.dataset.node === node.id;
+    card.classList.toggle("selected", active);
+    card.setAttribute("aria-pressed", String(active));
+  });
+  status.setAttribute("aria-live", announce ? "polite" : "off");
+  status.textContent = node.step ? "Step " + node.step + " of " + sequence.length : "Control plane";
+  document.getElementById("phase").textContent = node.phase;
+  document.getElementById("detail-title").textContent = node.title;
+  document.getElementById("detail-text").textContent = node.details;
+}
+function setPlaying(playing) {
+  clearInterval(timer);
+  timer = null;
+  play.textContent = playing ? "Pause" : "Play";
+  play.setAttribute("aria-pressed", String(playing));
+  svg.classList.toggle("paused", !playing);
+  if (playing) {
+    select(sequence[index], false);
+    timer = setInterval(() => {
+      index = (index + 1) % sequence.length;
+      select(sequence[index], false);
+    }, 2200);
+  }
+}
+cards.forEach(card => {
+  card.setAttribute("role", "button");
+  card.setAttribute("tabindex", "0");
+  const activate = () => {
+    setPlaying(false);
+    const node = nodes.find(item => item.id === card.dataset.node);
+    if (node.step) index = sequence.indexOf(node);
+    select(node, true);
+  };
+  card.addEventListener("click", activate);
+  card.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      activate();
+    }
+  });
+});
+play.addEventListener("click", () => setPlaying(timer === null));
+document.getElementById("next").addEventListener("click", () => {
+  setPlaying(false);
+  index = (index + 1) % sequence.length;
+  select(sequence[index], true);
+});
+document.getElementById("restart").addEventListener("click", () => {
+  setPlaying(false);
+  index = 0;
+  select(sequence[index], true);
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) setPlaying(false);
+});
+reduced.addEventListener("change", () => { if (reduced.matches) setPlaying(false); });
+select(sequence[index], false);
+setPlaying(!reduced.matches && !document.hidden);
+</script></body></html>

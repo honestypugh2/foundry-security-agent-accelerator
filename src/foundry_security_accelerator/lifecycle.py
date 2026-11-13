@@ -287,6 +287,7 @@ def run_lifecycle(state_dir: Path) -> dict[str, object]:
     after_resources = [
         lifecycle.access(proposal.tools[0], resource) for resource in proposal.resources
     ]
+    outside_package = lifecycle.access(proposal.tools[0], "synthetic-out-of-package")
     write = lifecycle.access(proposal.tools[0], proposal.resources[0], "WRITE")
     update = _Proposal(
         version=2,
@@ -310,6 +311,7 @@ def run_lifecycle(state_dir: Path) -> dict[str, object]:
         lifecycle.publish(update, approval)
     except PermissionError:
         rejected_update_publication_refused = True
+    after_rejected_update = lifecycle.access(proposal.tools[0], proposal.resources[0])
     audit_verified = verify_audit(lifecycle.audit.path, lifecycle.audit_head)
     checks = {
         "preapproval_access_denied": before["allowed"] is False,
@@ -325,9 +327,11 @@ def run_lifecycle(state_dir: Path) -> dict[str, object]:
             result["status"] == "READ_ONLY" for result in after_resources
         ),
         "write_access_denied": write["allowed"] is False,
+        "out_of_package_access_denied": outside_package["allowed"] is False,
         "failed_review_approval_refused": failed_review_approval_refused,
         "rejected_update_publication_refused": rejected_update_publication_refused,
         "prior_version_retained": lifecycle.current_version == 1,
+        "prior_version_still_readable": after_rejected_update["status"] == "READ_ONLY",
         "audit_hash_chain_verified": audit_verified,
     }
     report_path = run_dir / "report.json"
@@ -369,6 +373,9 @@ def run_lifecycle(state_dir: Path) -> dict[str, object]:
         access_after=after,
         resource_access_before=before_resources,
         resource_access_after=after_resources,
+        out_of_package_access=outside_package,
+        write_access=write,
+        access_after_rejected_update=after_rejected_update,
         update_review=update_review,
         review_findings=update_review["findings"],
         checks=checks,

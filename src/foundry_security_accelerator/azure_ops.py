@@ -116,11 +116,34 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "operation",
-        choices=("preflight", "provision", "cleanup", "agent-status", "whoami", "create-agent"),
+        choices=(
+            "preflight",
+            "provision",
+            "cleanup",
+            "agent-status",
+            "whoami",
+            "create-agent",
+            "presentation-review",
+            "presentation-setup",
+        ),
     )
     parser.add_argument("--authorize", action="store_true")
+    parser.add_argument("--profile", choices=("equipment", "presentation"), default="equipment")
     parser.add_argument("--from-json", type=Path)
     parsed = parser.parse_args(argv)
+    if parsed.operation in ("presentation-review", "presentation-setup"):
+        from .presentation_live import review, setup
+
+        if parsed.operation == "presentation-setup" and not parsed.authorize:
+            raise PermissionError("Presentation setup requires --authorize before settings/auth")
+        settings = Settings(mode="azure")
+        report = (
+            review(settings)
+            if parsed.operation == "presentation-review"
+            else setup(settings, authorized=parsed.authorize)
+        )
+        print(json.dumps(report, indent=2))
+        return 0
     if parsed.operation == "create-agent":
         if parsed.from_json is not None:
             parser.error("--from-json is only supported for agent-status")
@@ -159,6 +182,13 @@ def main(argv: list[str] | None = None) -> int:
                 label = "SIMULATED / SAVED EVIDENCE; provenance not authenticated"
             else:
                 settings = Settings(mode="azure")
+                if parsed.profile == "presentation":
+                    settings = settings.model_copy(
+                        update={
+                            "agent_name": settings.presentation_agent_name,
+                            "agent_version": settings.presentation_agent_version,
+                        }
+                    )
                 state = fetch_agent_status(settings)
                 source = f"Foundry project (live, read-only agents.get for '{settings.agent_name}')"
                 label = "LIVE READ; not Agent 365 registry or activity verification"

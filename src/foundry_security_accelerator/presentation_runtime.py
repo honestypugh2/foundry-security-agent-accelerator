@@ -304,6 +304,43 @@ def _tool(name: str, status: str, reason: str, **details: object) -> dict[str, o
     }
 
 
+def load_corpus() -> _Corpus:
+    return _Corpus.model_validate_json(
+        (_ROOT / "data/synthetic/presentation-corpus.json").read_text(encoding="utf-8")
+    )
+
+
+def identity_context(role: str) -> dict[str, object]:
+    role = _role(role)
+    return {
+        "role": role,
+        "identity_mode": "SYNTHETIC_ROLE_LABELS_NOT_ENTRA_OBO",
+        "agent_ceiling": sorted(_CEILING),
+        "user_classifications": sorted(_ROLES.get(role, frozenset())),
+        "effective_classifications": sorted(_ROLES.get(role, frozenset()) & _CEILING),
+    }
+
+
+def queue_records_request(state_dir: Path | str, text: str, role: str) -> dict[str, object]:
+    """Share exact, expiring DRY_RUN-only approval proposals across local and Azure labs."""
+    role = _role(role)
+    if not (_ROLES.get(role, frozenset()) & _CEILING):
+        return _denied("UNKNOWN_SYNTHETIC_ROLE")
+    entry = _enqueue(state_dir, text, role)
+    return {
+        "status": "REQUIRES_APPROVAL",
+        "reason": "INDEPENDENT_APPROVAL_REQUIRED",
+        "rule_id": "TOOL-03",
+        "answer": "Synthetic records request queued, not submitted. Independent approval "
+        "of this exact proposal is required before a local DRY_RUN receipt.",
+        "approval_id": entry.approval_id,
+        "proposal_hash": entry.proposal_hash,
+        "expires_at": entry.expires_at.isoformat(),
+        "proposal": entry.proposal.model_dump(mode="json"),
+        "tool_calls": [_tool("create_records_request", "QUEUED", "INDEPENDENT_APPROVAL_REQUIRED")],
+    }
+
+
 def _decide(text: str, role: str, state_dir: Path | str, corpus: _Corpus) -> dict[str, object]:
     lower = text.lower()
     allowed = _ROLES.get(role, frozenset()) & _CEILING
@@ -400,26 +437,7 @@ def _decide(text: str, role: str, state_dir: Path | str, corpus: _Corpus) -> dic
             ],
         }
     if re.search(r"create_records_request|(?:public records|records request|foia)", lower):
-        entry = _enqueue(state_dir, text, role)
-        return {
-            **common,
-            "status": "REQUIRES_APPROVAL",
-            "reason": "INDEPENDENT_APPROVAL_REQUIRED",
-            "rule_id": "TOOL-03",
-            "answer": "Synthetic records request queued, not submitted. Independent approval "
-            "of this exact proposal is required before a local DRY_RUN receipt.",
-            "approval_id": entry.approval_id,
-            "proposal_hash": entry.proposal_hash,
-            "expires_at": entry.expires_at.isoformat(),
-            "proposal": entry.proposal.model_dump(mode="json"),
-            "tool_calls": [
-                _tool(
-                    "create_records_request",
-                    "QUEUED",
-                    "INDEPENDENT_APPROVAL_REQUIRED",
-                )
-            ],
-        }
+        return {**common, **queue_records_request(state_dir, text, role)}
     if re.search(r"vendor|bulletin|maintenance|vnd-bul", lower):
         source_id = "VND-BUL-2026-11"
     elif re.search(r"retention|retain|elected|email|pol-rec-014", lower):
@@ -486,9 +504,7 @@ def run_question(text: str, role: str, state_dir: Path | str) -> dict[str, objec
     if not text.strip() or len(text) > 4000:
         return _denied("QUESTION_MUST_BE_1_TO_4000_CHARACTERS")
     role = _role(role)
-    corpus = _Corpus.model_validate_json(
-        (_ROOT / "data/synthetic/presentation-corpus.json").read_text(encoding="utf-8")
-    )
+    corpus = load_corpus()
     run_id = str(uuid4())
     run_dir = _base(state_dir) / "runs" / run_id
     run_dir.mkdir(parents=True)
@@ -546,6 +562,7 @@ def run_question(text: str, role: str, state_dir: Path | str) -> dict[str, objec
     report: dict[str, object] = {
         "kind": KIND,
         "disclaimer": corpus.disclaimer,
+        "question": redact(text),
         "run_id": run_id,
         "correlation_id": run_id,
         "run_dir": str(run_dir),

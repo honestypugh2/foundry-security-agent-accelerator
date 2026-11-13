@@ -203,5 +203,10 @@ def run(
         "traces": str(trace_path),
         "stages": ",".join(observed),
         "answer": redact(answer),
+        "sources": ",".join(doc.source_id for doc in documents),
+        "tool_name": result.name,
+        "tool_status": result.status,
+        "policy_outcome": policy.outcome,
+        "policy_reason": policy.reason,
         "telemetry_export": tracing.export_status,
     }

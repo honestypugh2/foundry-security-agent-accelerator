@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DIRECTORIES = ("src", "tests", "data", "agents", "notebooks", "scripts", "infra", "docs")
 FILES = (
     "README.md",
+    "AGENTS.md",
     "LICENSE",
     "NOTICE",
     "SECURITY.md",
@@ -21,7 +22,11 @@ FILES = (
     ".env.example",
     ".python-version",
     ".pre-commit-config.yaml",
+    ".devcontainer/devcontainer.json",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/dependabot.yml",
     ".github/workflows/validate.yml",
+    "azure.yaml",
     "docs/assets/readme-banner.png",
     "docs/assets/architecture/six-plane-reference.drawio",
     "docs/assets/architecture/six-plane-reference.svg",

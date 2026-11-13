@@ -1,0 +1,7 @@
+name: foundry-security-agent-accelerator
+metadata:
+  template: foundry-security-agent-accelerator
+infra:
+  provider: bicep
+  path: infra
+  module: main

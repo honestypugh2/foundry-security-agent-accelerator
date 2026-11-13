@@ -64,6 +64,11 @@ def test_snapshot_keeps_labs_but_excludes_local_presenter_material(
         ".presenter/portal-talk-track.md",
     )
     public = (
+        "AGENTS.md",
+        ".devcontainer/devcontainer.json",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        ".github/dependabot.yml",
+        "azure.yaml",
         "src/workshop.py",
         "docs/participant-lab/local-fallback.md",
         "docs/assets/architecture/six-plane-reference.drawio",
@@ -75,6 +80,8 @@ def test_snapshot_keeps_labs_but_excludes_local_presenter_material(
         "docs/assets/screenshots/foundry-function-tools.png",
     )
     private += (
+        ".devcontainer/private-config.json",
+        ".github/private-notes.md",
         "docs/assets/screenshots/private-portal-capture.png",
         "docs/assets/architecture/private-tenant-state.drawio",
         "docs/research/native-evidence.svg",

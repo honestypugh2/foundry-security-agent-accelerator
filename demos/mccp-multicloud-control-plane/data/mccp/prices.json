@@ -1,0 +1,34 @@
+{
+  "label": "ILLUSTRATIVE prices in USD per 1M tokens. Replace with your contract / list prices before any customer-facing number. VALIDATE.",
+  "currency": "USD",
+  "reference_model_for_user_quota": "gpt-4.1",
+  "reference_input_share": 0.7,
+  "models": {
+    "gpt-4.1": {
+      "input_per_1m": 2.0,
+      "output_per_1m": 8.0
+    },
+    "gpt-4.1-mini": {
+      "input_per_1m": 0.4,
+      "output_per_1m": 1.6
+    },
+    "anthropic.claude-sonnet-4": {
+      "input_per_1m": 3.0,
+      "output_per_1m": 15.0
+    },
+    "amazon.nova-pro": {
+      "input_per_1m": 0.8,
+      "output_per_1m": 3.2
+    },
+    "copilot-studio": {
+      "input_per_1m": 1.0,
+      "output_per_1m": 4.0,
+      "note": "Copilot Studio bills Copilot Credits/messages, not tokens; token-equivalent rate for showback only. VALIDATE."
+    },
+    "snowflake-cortex": {
+      "input_per_1m": 1.5,
+      "output_per_1m": 1.5,
+      "note": "Snowflake Cortex bills Snowflake credits; token-equivalent rate for showback only. VALIDATE."
+    }
+  }
+}

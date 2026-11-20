@@ -1,0 +1,11 @@
+// Tokens per agent / cloud / cost center, last 24h, hourly (Log Analytics workspace, table AppMetrics).
+// AppMetrics is the workspace-based App Insights table for customMetrics; dimensions live in Properties.
+AppMetrics
+| where TimeGenerated > ago(24h)
+| where Name in ("Prompt Tokens", "Completion Tokens", "Total Tokens")
+| extend AgentId = tostring(Properties["agent-id"]),
+         Cloud = tostring(Properties["cloud"]),
+         CostCenter = tostring(Properties["cost-center"])
+| summarize Tokens = sum(Sum) by Name, AgentId, Cloud, CostCenter, bin(TimeGenerated, 1h)
+| evaluate pivot(Name, sum(Tokens))
+| order by TimeGenerated desc, AgentId asc

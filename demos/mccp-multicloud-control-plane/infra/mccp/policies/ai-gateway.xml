@@ -1,0 +1,162 @@
+<policies>
+  <!--
+    mccp AI gateway policy (API scope) for Azure API Management.
+    Mirrored 1:1 by src/mccp/policy_sim.py (see the mapping table at the top of that file).
+
+    Identity: exactly one validate-jwt block is active. apim.bicep turns the other one into a comment at deploy
+    time (identityProvider = entra | okta). Keep the text between the markers free of double hyphens.
+
+    Named values (created by infra/mccp/modules/apim.bicep):
+      {{okta-issuer}}        e.g. https://contoso-health.okta.example/oauth2/default
+      {{okta-audience}}      e.g. api://contoso-ai-gateway
+      {{killswitch-global}}  "true" | "false"
+      {{killed-agents}}      comma-separated agent ids; "none" when empty
+                             (named values may not be empty, hence the "none" sentinel)
+      {{killed-users}}       comma-separated user ids stopped by a user-scope kill; "none" when empty
+      {{quota-tier2-users}}  comma-separated user ids with an approved monthly quota increase; "none" when empty
+      {{entra-tenant-id}}    tenant whose tokens are accepted (identityProvider = entra)
+      {{entra-audience}}     e.g. https://cognitiveservices.azure.com (matches az account get-access-token)
+
+    Build-time tokens replaced by apim.bicep with replace():
+      __TPM_PER_AGENT__  __AGENT_MONTHLY_TOKEN_QUOTA__  __USER_MONTHLY_TOKEN_QUOTA__  __USER_TIER2_MONTHLY_TOKEN_QUOTA__
+  -->
+  <inbound>
+    <base />
+    <!-- 1. Agent identity. Exactly one of the two blocks below is active after deployment. -->
+    <!--__OKTA_BEGIN__-->
+    <validate-jwt header-name="Authorization" require-scheme="Bearer" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized: invalid or missing agent token" output-token-variable-name="jwt">
+      <openid-config url="{{okta-issuer}}/.well-known/openid-configuration" />
+      <audiences>
+        <audience>{{okta-audience}}</audience>
+      </audiences>
+      <issuers>
+        <issuer>{{okta-issuer}}</issuer>
+      </issuers>
+    </validate-jwt>
+    <!--__OKTA_END__-->
+    <!--__ENTRA_BEGIN__-->
+    <validate-jwt header-name="Authorization" require-scheme="Bearer" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized: invalid or missing agent token" output-token-variable-name="jwt">
+      <openid-config url="https://login.microsoftonline.com/{{entra-tenant-id}}/v2.0/.well-known/openid-configuration" />
+      <audiences>
+        <audience>{{entra-audience}}</audience>
+      </audiences>
+      <issuers>
+        <issuer>https://sts.windows.net/{{entra-tenant-id}}/</issuer>
+        <issuer>https://login.microsoftonline.com/{{entra-tenant-id}}/v2.0</issuer>
+      </issuers>
+    </validate-jwt>
+    <!--__ENTRA_END__-->
+
+    <!-- 2. Resolve who is calling. Token claim agent_id (Okta custom claim) wins; header x-agent-id; then cid / azp. -->
+    <set-variable name="agentId" value="@{
+        var jwt = (Jwt)context.Variables["jwt"];
+        var fromClaim = jwt.Claims.GetValueOrDefault("agent_id", "");
+        if (!string.IsNullOrEmpty(fromClaim)) { return fromClaim; }
+        var fromHeader = context.Request.Headers.GetValueOrDefault("x-agent-id", "");
+        if (!string.IsNullOrEmpty(fromHeader)) { return fromHeader; }
+        var cid = jwt.Claims.GetValueOrDefault("cid", "");
+        return string.IsNullOrEmpty(cid) ? jwt.Claims.GetValueOrDefault("azp", "unknown") : cid;
+    }" />
+    <!-- VALIDATE: with pure client-credentials, sub == client id. Use Okta token exchange / OBO so sub is the human user. -->
+    <set-variable name="userId" value="@(((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("sub", "anonymous"))" />
+    <set-variable name="cloud" value="@(context.Request.Headers.GetValueOrDefault("x-cloud", "unknown"))" />
+    <set-variable name="costCenter" value="@(context.Request.Headers.GetValueOrDefault("x-cost-center", "unassigned"))" />
+
+    <!-- 3. A header may not claim a different agent than the signed token -->
+    <choose>
+      <when condition="@{
+          var claim = ((Jwt)context.Variables["jwt"]).Claims.GetValueOrDefault("agent_id", "");
+          var header = context.Request.Headers.GetValueOrDefault("x-agent-id", "");
+          return !string.IsNullOrEmpty(claim) &amp;&amp; !string.IsNullOrEmpty(header) &amp;&amp; claim != header;
+      }">
+        <return-response>
+          <set-status code="403" reason="Forbidden" />
+          <set-header name="Content-Type" exists-action="override"><value>application/json</value></set-header>
+          <set-body>@("{\"error\":\"agent_identity_mismatch\",\"agentId\":\"" + (string)context.Variables["agentId"] + "\"}")</set-body>
+        </return-response>
+      </when>
+    </choose>
+
+    <!-- 4. Global kill switch (platform-wide stop) -->
+    <choose>
+      <when condition="@("{{killswitch-global}}".Equals("true", StringComparison.OrdinalIgnoreCase))">
+        <return-response>
+          <set-status code="503" reason="Service Unavailable" />
+          <set-header name="Retry-After" exists-action="override"><value>300</value></set-header>
+          <set-header name="Content-Type" exists-action="override"><value>application/json</value></set-header>
+          <set-body>{"error":"global_kill_switch","message":"All agent traffic is stopped by the Contoso Health AI control plane."}</set-body>
+        </return-response>
+      </when>
+    </choose>
+
+    <!-- 5. Per-agent kill list -->
+    <choose>
+      <when condition="@(("," + "{{killed-agents}}".Replace(" ", "") + ",").Contains("," + (string)context.Variables["agentId"] + ","))">
+        <return-response>
+          <set-status code="423" reason="Locked" />
+          <set-header name="Content-Type" exists-action="override"><value>application/json</value></set-header>
+          <set-body>@("{\"error\":\"agent_killed\",\"agentId\":\"" + (string)context.Variables["agentId"] + "\",\"message\":\"Agent is stopped by the kill switch. Contact the agent owner.\"}")</set-body>
+        </return-response>
+      </when>
+    </choose>
+
+    <!-- 5b. Per-user kill list (user scope: stops every agent acting for this user) -->
+    <choose>
+      <when condition="@(("," + "{{killed-users}}".Replace(" ", "") + ",").Contains("," + (string)context.Variables["userId"] + ","))">
+        <return-response>
+          <set-status code="423" reason="Locked" />
+          <set-header name="Content-Type" exists-action="override"><value>application/json</value></set-header>
+          <set-body>@("{\"error\":\"user_killed\",\"userId\":\"" + (string)context.Variables["userId"] + "\",\"message\":\"Agent access for this user is stopped by the kill switch.\"}")</set-body>
+        </return-response>
+      </when>
+    </choose>
+
+    <!-- 6. Per-agent burst (TPM) and monthly quota.
+         Documented behaviour: tokens-per-minute exceeded -> 429; token-quota exceeded -> 403. -->
+    <llm-token-limit counter-key="@((string)context.Variables["agentId"])" tokens-per-minute="__TPM_PER_AGENT__" token-quota="__AGENT_MONTHLY_TOKEN_QUOTA__" token-quota-period="Monthly" estimate-prompt-tokens="true" remaining-quota-tokens-header-name="x-agent-remaining-quota-tokens" remaining-tokens-header-name="x-remaining-tokens" tokens-consumed-header-name="x-tokens-consumed" />
+
+    <!-- 7. Per-user monthly quota (the "monthly dollar limit per user", converted to tokens by finops.py).
+         Users in {{quota-tier2-users}} have an approved increase and use a separate, larger counter.
+         VALIDATE: confirm llm-token-limit may appear more than once per policy definition and inside choose;
+         if not, move the per-user limit to the product scope policy. -->
+    <choose>
+      <when condition="@(("," + "{{quota-tier2-users}}".Replace(" ", "") + ",").Contains("," + (string)context.Variables["userId"] + ","))">
+        <llm-token-limit counter-key="@("tier2:" + (string)context.Variables["userId"])" token-quota="__USER_TIER2_MONTHLY_TOKEN_QUOTA__" token-quota-period="Monthly" estimate-prompt-tokens="true" remaining-quota-tokens-variable-name="userRemainingQuota" />
+      </when>
+      <otherwise>
+        <llm-token-limit counter-key="@("user:" + (string)context.Variables["userId"])" token-quota="__USER_MONTHLY_TOKEN_QUOTA__" token-quota-period="Monthly" estimate-prompt-tokens="true" remaining-quota-tokens-variable-name="userRemainingQuota" />
+      </otherwise>
+    </choose>
+
+    <!-- 8. Token metrics for showback / alerts (App Insights customMetrics; namespace mccp).
+         VALIDATE: enable "custom metrics with dimensions" on App Insights; keep dimensions within the documented limit. -->
+    <llm-emit-token-metric namespace="mccp">
+      <dimension name="API ID" />
+      <dimension name="agent-id" value="@((string)context.Variables["agentId"])" />
+      <dimension name="user-id" value="@((string)context.Variables["userId"])" />
+      <dimension name="cloud" value="@((string)context.Variables["cloud"])" />
+      <dimension name="cost-center" value="@((string)context.Variables["costCenter"])" />
+    </llm-emit-token-metric>
+
+    <!-- 9. Call Foundry with the gateway's managed identity (no keys) -->
+    <authentication-managed-identity resource="https://cognitiveservices.azure.com" />
+    <set-backend-service backend-id="foundry-openai" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+    <set-header name="x-user-remaining-quota-tokens" exists-action="override">
+      <value>@(context.Variables.ContainsKey("userRemainingQuota") ? context.Variables["userRemainingQuota"].ToString() : "")</value>
+    </set-header>
+    <set-header name="x-agent-id" exists-action="override">
+      <value>@((string)context.Variables["agentId"])</value>
+    </set-header>
+  </outbound>
+  <on-error>
+    <base />
+    <set-header name="Content-Type" exists-action="override"><value>application/json</value></set-header>
+    <set-body>@("{\"error\":\"gateway_error\",\"source\":\"" + context.LastError.Source + "\",\"reason\":\"" + context.LastError.Reason + "\",\"requestId\":\"" + context.RequestId + "\"}")</set-body>
+  </on-error>
+</policies>

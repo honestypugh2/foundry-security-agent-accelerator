@@ -1,0 +1,10 @@
+# demos/mccp-multicloud-control-plane
+.env
+.env.mccp.azure
+artifacts/
+secrets/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/

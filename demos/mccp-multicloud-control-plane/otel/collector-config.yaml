@@ -1,0 +1,58 @@
+# OpenTelemetry Collector (contrib distribution: otelcol-contrib) for mccp.
+# Agents (Azure, AWS, SaaS connectors) export OTLP here; the collector fans out to Datadog AND Azure Monitor.
+#   env: DD_API_KEY, DD_SITE (e.g. datadoghq.com), APPLICATIONINSIGHTS_CONNECTION_STRING
+#   run: otelcol-contrib --config otel/collector-config.yaml
+# Notes
+#   * The Datadog exporter + datadog connector (APM trace metrics) and the azuremonitor exporter are contrib components.
+#     VALIDATE component versions / config keys against the collector release you deploy.
+#   * Alternative: point OTLP straight at a Datadog Agent with OTLP ingest enabled (port 4317/4318).
+#   * GenAI attributes (gen_ai.*) are passed through unchanged; Datadog LLM Observability can map OTel GenAI spans
+#     (VALIDATE the semconv version Datadog supports).
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    send_batch_size: 512
+    timeout: 5s
+  resource:
+    attributes:
+      - key: organization
+        value: contoso-health
+        action: upsert
+      - key: deployment.environment
+        value: demo
+        action: insert
+
+connectors:
+  datadog/connector: {}
+
+exporters:
+  datadog:
+    api:
+      key: ${env:DD_API_KEY}
+      site: ${env:DD_SITE}
+  azuremonitor:
+    connection_string: ${env:APPLICATIONINSIGHTS_CONNECTION_STRING}
+  debug:
+    verbosity: basic
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [resource, batch]
+      exporters: [datadog/connector, datadog, azuremonitor]
+    metrics:
+      receivers: [otlp, datadog/connector]
+      processors: [resource, batch]
+      exporters: [datadog, azuremonitor]
+    logs:
+      receivers: [otlp]
+      processors: [resource, batch]
+      exporters: [datadog, azuremonitor]

@@ -1,0 +1,15 @@
+// Month-to-date tokens per day / agent / user / cost center — priced in Python by src/mccp/finops.py
+// (prices are not stored in Log Analytics). Columns must match finops.query_log_analytics().
+let monthStart = startofmonth(now());
+AppMetrics
+| where TimeGenerated >= monthStart
+| where Name in ("Prompt Tokens", "Completion Tokens")
+| extend AgentId = tostring(Properties["agent-id"]),
+         UserId = tostring(Properties["user-id"]),
+         Cloud = tostring(Properties["cloud"]),
+         CostCenter = tostring(Properties["cost-center"]),
+         Day = startofday(TimeGenerated)
+| summarize PromptTokens = sumif(Sum, Name == "Prompt Tokens"),
+            CompletionTokens = sumif(Sum, Name == "Completion Tokens")
+            by Day, AgentId, UserId, Cloud, CostCenter
+| order by Day asc, AgentId asc

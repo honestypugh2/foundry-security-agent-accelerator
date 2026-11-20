@@ -1,0 +1,22 @@
+{
+  "name": "[mccp] Agent token budget — {{gen_ai.agent.id.name}}",
+  "type": "query alert",
+  "query": "sum(last_1h):sum:gen_ai.client.token.usage{service:mccp-agents} by {gen_ai.agent.id}.as_count() > 2000000",
+  "message": "Agent {{gen_ai.agent.id.name}} used {{value}} tokens in the last hour (threshold {{threshold}}).\nDatadog alerts; the Azure API Management gateway enforces. The webhook calls the kill-switch Logic App, which adds the agent to the APIM named value `killed-agents`.\n{{#is_alert}}@webhook-mccp-killswitch{{/is_alert}} @ai-platform@contoso-health.example",
+  "tags": ["team:ai-platform", "app:mccp", "org:contoso-health"],
+  "priority": 2,
+  "options": {
+    "thresholds": { "critical": 2000000, "warning": 1500000 },
+    "notify_no_data": false,
+    "require_full_window": false,
+    "include_tags": true,
+    "renotify_interval": 0,
+    "evaluation_delay": 60
+  },
+  "_notes": [
+    "VALIDATE: the metric name Datadog stores for the OTel histogram gen_ai.client.token.usage (histograms may map to a distribution or .sum/.count series depending on exporter settings).",
+    "VALIDATE: tag key gen_ai.agent.id is kept as-is by the Datadog exporter.",
+    "Create the webhook integration 'mccp-killswitch' with the Logic App callback URL (contains a SAS signature: store it only in the Datadog webhook integration, never in git) and the payload in datadog/webhook_payload.json.",
+    "Create via API: POST https://api.<DD_SITE>/api/v1/monitor with DD-API-KEY and DD-APPLICATION-KEY headers (remove this _notes field first)."
+  ]
+}

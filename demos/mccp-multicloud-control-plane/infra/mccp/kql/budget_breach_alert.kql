@@ -1,0 +1,9 @@
+// Alert query used by killswitch.bicep (scheduled query rule scoped to Application Insights).
+// One row per agent per 5 minutes; the rule sums TotalTokens over the 1h window and splits by `agent`.
+// Metric written by <llm-emit-token-metric namespace="mccp"> (customMetrics; dimensions in customDimensions).
+// VALIDATE: "custom metrics with dimensions" must be enabled on the App Insights resource.
+customMetrics
+| where name == "Total Tokens"
+| extend agent = tostring(customDimensions["agent-id"])
+| where isnotempty(agent)
+| summarize TotalTokens = sum(valueSum) by agent, bin(timestamp, 5m)

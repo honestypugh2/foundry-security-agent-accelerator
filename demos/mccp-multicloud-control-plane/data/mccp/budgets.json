@@ -1,0 +1,25 @@
+{
+  "label": "Synthetic monthly budgets (USD). Standard per-user limit $40 maps to the gateway user token quota.",
+  "standard_user_monthly_usd": 40.0,
+  "tier2_user_monthly_usd": 80.0,
+  "users": {
+    "maria.gomez@contoso-health.example": 40.0,
+    "a.okafor@contoso-health.example": 40.0,
+    "k.ito@contoso-health.example": 40.0,
+    "j.chen@contoso-health.example": 40.0,
+    "p.nair@contoso-health.example": 40.0,
+    "r.silva@contoso-health.example": 40.0,
+    "l.mendes@contoso-health.example": 40.0,
+    "t.berg@contoso-health.example": 40.0,
+    "s.khan@contoso-health.example": 40.0,
+    "d.wu@contoso-health.example": 40.0
+  },
+  "cost_centers": {
+    "CC-1001-claims-ops": 200.0,
+    "CC-2002-revenue-cycle": 80.0,
+    "CC-3003-patient-access": 60.0,
+    "CC-4004-supply-chain": 50.0,
+    "CC-5005-people-ops": 15.0,
+    "CC-6006-enterprise-analytics": 25.0
+  }
+}

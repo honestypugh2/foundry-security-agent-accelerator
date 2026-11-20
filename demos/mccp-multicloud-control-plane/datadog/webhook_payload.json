@@ -1,0 +1,11 @@
+{
+  "source": "datadog",
+  "alert_id": "$ALERT_ID",
+  "alert_title": "$ALERT_TITLE",
+  "alert_transition": "$ALERT_TRANSITION",
+  "alert_scope": "$ALERT_SCOPE",
+  "event_message": "$EVENT_MSG",
+  "date": "$DATE",
+  "tags": "$TAGS",
+  "org": "contoso-health"
+}

@@ -1,0 +1,13 @@
+// Calls stopped by the control plane: 423 (killed agent/user), 503 (global stop), 429 (burst), 403 (quota / identity),
+// 401 (token). Source: APIM resource-specific gateway logs (diagnostic setting with Dedicated destination).
+// VALIDATE column names in your workspace (ApiManagementGatewayLogs).
+ApiManagementGatewayLogs
+| where TimeGenerated > ago(7d)
+| where ResponseCode in (401, 403, 423, 429, 503)
+| extend Reason = case(ResponseCode == 423, "killed",
+                       ResponseCode == 503, "global stop",
+                       ResponseCode == 429, "burst limit (TPM)",
+                       ResponseCode == 403, "quota or identity mismatch",
+                       "unauthenticated")
+| summarize Calls = count(), LastSeen = max(TimeGenerated) by Reason, ResponseCode, ApiId, ClientIp
+| order by Calls desc
